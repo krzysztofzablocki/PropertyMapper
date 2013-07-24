@@ -58,7 +58,7 @@ Let's now change our mind and decide that we want our type property to be typede
 @"videoType" : @"@Selector(videoTypeFromString:, type)",
 
 //! implemented on instance you are parsing
-- (NSUInteger)presentationTypeFromString:(NSString *)type
+- (NSUInteger)videoTypeFromString:(NSString *)type
 {
   if ([type isEqualToString:@"shortVideo"]) {
     return VideoTypeShort;
