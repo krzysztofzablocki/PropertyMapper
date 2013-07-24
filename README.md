@@ -96,5 +96,5 @@ CocoaPods spec will follow shortly. For now you can just add KZPropertyMapper.h 
 
 [Follow me on twitter][7]
 
- [2]: http://foldify.pl
+ [2]: http://foldifyapp.com
  [7]: http://twitter.com/merowing_
