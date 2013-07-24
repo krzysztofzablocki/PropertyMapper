@@ -1,0 +1,1 @@
+../../TestFlightSDK/TestFlight+ManualSessions.h
