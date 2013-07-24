@@ -24,7 +24,12 @@ describe(@"KZPropertyMapper", ^{
     __block KZPropertyTestObject *testObject;
     
     beforeEach(^{
-      mapping = @{@"videoURL" : @"@URL(contentURL)", @"name" : @"title", @"videoType" : @"type", @"sub_object" : @{@"title" : @"uniqueID"}};
+      mapping = @{@"videoURL" : @"@URL(contentURL)",
+                  @"name" : @"title",
+                  @"videoType" : @"type",
+                  @"sub_object" : @{
+                      @"title" : @"uniqueID"}
+                  };
       sourceDictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
       testObject = [KZPropertyTestObject new];
     });
