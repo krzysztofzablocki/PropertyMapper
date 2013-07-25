@@ -1,4 +1,4 @@
-# Stop repeating  your data parsing in iOS apps? 
+# Stop repeating  your data parsing in iOS apps. 
 Data parsing is one of most common tasks we need to do in our apps, yet still majority of people do this parsing by hand, always repeating the same code for each class they need to map.
 
 Usual parsing requires this steps:
