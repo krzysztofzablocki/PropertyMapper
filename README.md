@@ -42,12 +42,13 @@ and you receive data from server in this format:
 this is the code you would write in your parsing code:
 ````
 [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
-   @{@"videoURL" : @"@URL(contentURL)",
+   @"videoURL" : @"@URL(contentURL)",
      @"name" : @"title",
      @"videoType" : @"type",
      @"sub_object" : @{
-         @"title" : @"uniqueID"}
-     }
+         @"title" : @"uniqueID"
+         }
+    
   }];
 ````
 Quite obvious what it does but in case you are confused, it will translate videoURL string to contentURL NSURL object, it will also grab title from sub_object and assign it to uniqueID. It also handles NSNull.
