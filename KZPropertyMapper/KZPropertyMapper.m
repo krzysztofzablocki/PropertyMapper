@@ -3,22 +3,17 @@
 //
 //
 //
-#import "DDLog.h"
-
 typedef NS_ENUM(NSInteger, kErrorCode) {
   kErrorCodeInternal = 44324344,
 };
-
-static const int ddLogLevel = LOG_LEVEL_INFO;
 
 NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUserInfo, SEL selector)
 {
   NSMutableDictionary *userInfo = [aUserInfo mutableCopy];
   userInfo[NSLocalizedDescriptionKey] = message;
   NSError *error = [NSError errorWithDomain:@"com.pixle.KZPropertyMapper" code:code userInfo:userInfo];
-  
-  SEL _cmd = selector;
-  DDLogError(@"%@ %@", error.localizedDescription, error.userInfo);
+
+  NSLog(@"KZPropertyMapper Error: %@", error);
   return error;
 }
 
@@ -90,16 +85,19 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
     if ([value isKindOfClass:NSDictionary.class] || [value isKindOfClass:NSArray.class]) {
       [self mapValuesFrom:value toInstance:instance usingMapping:mapping];
     } else {
-      DDLogVerbose(@"Ignoring property %@ as it's not in mapping dictionary", propertyName);
+#if KZPropertyMapperLogIgnoredValues
+      NSLog(@"KZPropertyMapper: Ignoring property %@ as it's not in mapping dictionary", propertyName);
+#endif
     }
     return;
   }
 
   if (!mapping) {
-    DDLogVerbose(@"Ignoring value at index %@ as it's not mapped", propertyName);
+#if KZPropertyMapperLogIgnoredValues
+    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", propertyName);
+#endif
     return;
   }
-  DDLogVerbose(@"mapping value at index %@ to %@", propertyName, mapping);
 
   [self mapValue:value toInstance:instance usingMapping:mapping];
 }

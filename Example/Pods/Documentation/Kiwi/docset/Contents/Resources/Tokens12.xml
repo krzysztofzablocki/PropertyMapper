@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/KWBeNonNilMatcher.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/KWBeNonNilMatcher</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>KWBeNonNilMatcher.h</DeclaredIn>
+			
+			<NodeRef refid="12"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/KWBeNonNilMatcher/beNonNil</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>KWBeNonNilMatcher.h</DeclaredIn>			
+			
+			<Declaration>- (void)beNonNil</Declaration>
+			
+			
+			<Anchor>//api/name/beNonNil</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/KWBeNonNilMatcher/beNonNil:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>KWBeNonNilMatcher.h</DeclaredIn>			
+			
+			<Declaration>- (void)beNonNil:(BOOL)matcherHasSubject</Declaration>
+			
+			
+			<Anchor>//api/name/beNonNil:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/KWBeNonNilMatcher/verifyNilSubject</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>KWBeNonNilMatcher.h</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)verifyNilSubject</Declaration>
+			
+			
+			<Anchor>//api/name/verifyNilSubject</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

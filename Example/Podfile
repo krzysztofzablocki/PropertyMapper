@@ -1,8 +1,4 @@
-platform :ios, '6.0'
-target 'KZPropertyMapper', :exclusive => true do
-  pod 'NSLogger-CocoaLumberjack-connector'
-  pod 'TestFlightSDK'
-end
-target 'KZPropertyMapperTests', :exclusive => true do
+platform :ios, '5.0'
+target 'ExampleTests', :exclusive => true do
   pod 'Kiwi'
 end

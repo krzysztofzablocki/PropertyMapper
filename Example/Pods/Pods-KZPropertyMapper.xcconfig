@@ -1,9 +1,0 @@
-ALWAYS_SEARCH_USER_PATHS = YES
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
-LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/TestFlightSDK"
-OTHER_LDFLAGS = -ObjC -lTestFlight -lz -framework CFNetwork -framework SystemConfiguration -framework UIKit
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/CocoaLumberjack" "${PODS_ROOT}/BuildHeaders/Kiwi" "${PODS_ROOT}/BuildHeaders/NSLogger" "${PODS_ROOT}/BuildHeaders/NSLogger-CocoaLumberjack-connector" "${PODS_ROOT}/BuildHeaders/TestFlightSDK"
-PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
-PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CocoaLumberjack" "${PODS_ROOT}/Headers/Kiwi" "${PODS_ROOT}/Headers/NSLogger" "${PODS_ROOT}/Headers/NSLogger-CocoaLumberjack-connector" "${PODS_ROOT}/Headers/TestFlightSDK"
-PODS_ROOT = ${SRCROOT}/Pods
