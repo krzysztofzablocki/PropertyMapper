@@ -136,12 +136,14 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
     SEL mappingSelector = NSSelectorFromString([NSString stringWithFormat:@"boxValueAs%@OnTarget:value:params:", mappingType]);
     AssertTrueOrReturnBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
     });
-    boxedValue = objc_msgSend(self, mappingSelector, instance, value, boxingParameters);
+    id (*objc_msgSendTyped)(id, SEL, id, id, NSArray *) = (void*)objc_msgSend;
+    boxedValue = objc_msgSendTyped(self, mappingSelector, instance, value, boxingParameters);
   } else {
     SEL mappingSelector = NSSelectorFromString([NSString stringWithFormat:@"boxValueAs%@:", mappingType]);
     AssertTrueOrReturnBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
     });
-    boxedValue = objc_msgSend(self, mappingSelector, value);
+    id (*objc_msgSendTyped)(id, SEL, id) = (void*)objc_msgSend;
+    boxedValue = objc_msgSendTyped(self, mappingSelector, value);
   }
 
   if (!boxedValue) {
@@ -197,7 +199,8 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   SEL selector = NSSelectorFromString([params objectAtIndex:0]);
 
   AssertTrueOrReturnNil([target respondsToSelector:selector]);
-  return objc_msgSend(target, selector, value);
+  id (*objc_msgSendTyped)(id, SEL, id) = (void*)objc_msgSend;
+  return objc_msgSendTyped(target, selector, value);
 }
 
 @end
