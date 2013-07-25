@@ -154,15 +154,15 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
 
 + (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
 {
-  [instance willChangeValueForKey:mapping];
   
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass]) {
+    [instance willChangeValueForKey:mapping];
     objc_msgSend(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
+    [instance didChangeValueForKey:mapping];
   } else {
     [instance setValue:value forKey:mapping];
   }
-  [instance didChangeValueForKey:mapping];
 }
 #pragma mark - Dynamic boxing
 
