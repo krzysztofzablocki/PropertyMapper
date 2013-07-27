@@ -91,9 +91,12 @@ You can expand boxing capabilities across whole application easily, just add cat
 ````
 Now you can use @Type mapping everywhere in your code.
 
+# Installing
+Use CocoaPods.
+Or just add KZPropertyMapper.h / m to your project, make sure you enable ARC on this files.
+
 # Final note
 Unit tests should serve as documentation. Default boxing types include @URL and @Date. 
-CocoaPods spec will follow shortly. For now you can just add KZPropertyMapper.h / m to your project, ARC only.
 
 [Follow me on twitter][7]
 
