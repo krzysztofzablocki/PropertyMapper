@@ -168,9 +168,10 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
 
 + (NSURL *)boxValueAsURL:(id)value __unused
 {
-  AssertTrueOrReturnNilBlock([value isKindOfClass:NSString.class], ^(NSError *error) {
-  });
-
+  if(value == nil){
+    return nil;
+  }
+  AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
   return [NSURL URLWithString:value];
 }
 
@@ -179,8 +180,7 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   if(value == nil){
     return nil;
   }
-  AssertTrueOrReturnNilBlock([value isKindOfClass:NSString.class], ^(NSError *error) {
-  });
+  AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
   return [[self dateFormatter] dateFromString:value];
 }
 
