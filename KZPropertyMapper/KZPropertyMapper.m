@@ -176,6 +176,9 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
 
 + (NSDate *)boxValueAsDate:(id)value __unused
 {
+  if(value == nil){
+    return nil;
+  }
   AssertTrueOrReturnNilBlock([value isKindOfClass:NSString.class], ^(NSError *error) {
   });
   return [[self dateFormatter] dateFromString:value];
