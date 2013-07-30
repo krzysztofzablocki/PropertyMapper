@@ -168,16 +168,19 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
 
 + (NSURL *)boxValueAsURL:(id)value __unused
 {
-  AssertTrueOrReturnNilBlock([value isKindOfClass:NSString.class], ^(NSError *error) {
-  });
-
+  if(value == nil){
+    return nil;
+  }
+  AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
   return [NSURL URLWithString:value];
 }
 
 + (NSDate *)boxValueAsDate:(id)value __unused
 {
-  AssertTrueOrReturnNilBlock([value isKindOfClass:NSString.class], ^(NSError *error) {
-  });
+  if(value == nil){
+    return nil;
+  }
+  AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
   return [[self dateFormatter] dateFromString:value];
 }
 
