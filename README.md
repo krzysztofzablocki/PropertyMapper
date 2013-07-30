@@ -59,16 +59,16 @@ Let's now change our mind and decide that we want our type property to be typede
 @"videoType" : @"@Selector(videoTypeFromString:, type)",
 
 //! implemented on instance you are parsing
-- (NSUInteger)videoTypeFromString:(NSString *)type
+- (id)videoTypeFromString:(NSString *)type
 {
   if ([type isEqualToString:@"shortVideo"]) {
-    return VideoTypeShort;
+    return @(VideoTypeShort);
   }
 
-  return VideoTypeLong;
+  return @(VideoTypeLong);
 }
 ```` 
-Done. Same approach will work for sub-object instances or anything that you can assign to property.
+Done. KVC should also take care of escaping NSNumber into int if your property uses primitive type. Same approach will work for sub-object instances or anything that you can assign to property.
 
 ### Referencing arrays items
 If your data comes to you in ordered array instead of dictionaries you can reference that as well:
