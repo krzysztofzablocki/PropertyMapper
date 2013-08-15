@@ -192,6 +192,7 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
     [df setLocale:locale];
+    [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
   }
   return df;
 }
