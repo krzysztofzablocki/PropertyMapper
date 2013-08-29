@@ -84,18 +84,16 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   if ([mapping isKindOfClass:NSDictionary.class] || [mapping isKindOfClass:NSArray.class]) {
     if ([value isKindOfClass:NSDictionary.class] || [value isKindOfClass:NSArray.class]) {
       [self mapValuesFrom:value toInstance:instance usingMapping:mapping];
-    } else {
-#if KZPropertyMapperLogIgnoredValues
-      NSLog(@"KZPropertyMapper: Ignoring property %@ as it's not in mapping dictionary", propertyName);
-#endif
+    } else if (_shouldLogIgnoredValues) {
+        NSLog(@"KZPropertyMapper: Ignoring property %@ as it's not in mapping dictionary", propertyName);
     }
     return;
   }
 
   if (!mapping) {
-#if KZPropertyMapperLogIgnoredValues
-    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", propertyName);
-#endif
+    if (_shouldLogIgnoredValues) {
+      NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", propertyName);
+    }
     return;
   }
 
@@ -205,6 +203,19 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   AssertTrueOrReturnNil([target respondsToSelector:selector]);
   id (*objc_msgSendTyped)(id, SEL, id) = (void*)objc_msgSend;
   return objc_msgSendTyped(target, selector, value);
+}
+
+#pragma mark - Logging configuration
+
+#ifdef KZPropertyMapperLogIgnoredValues
+static BOOL _shouldLogIgnoredValues = KZPropertyMapperLogIgnoredValues;
+#else
+static BOOL _shouldLogIgnoredValues = YES;
+#endif
+
++ (void)logIgnoredValues:(BOOL)logIgnoredValues
+{
+  _shouldLogIgnoredValues = logIgnoredValues;
 }
 
 @end
