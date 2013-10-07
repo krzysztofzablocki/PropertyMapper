@@ -7,8 +7,7 @@ typedef NS_ENUM(NSInteger, kErrorCode) {
   kErrorCodeInternal = 44324344,
 };
 
-NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUserInfo, SEL selector)
-{
+NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUserInfo, SEL selector) {
   NSMutableDictionary *userInfo = [aUserInfo mutableCopy];
   userInfo[NSLocalizedDescriptionKey] = message;
   NSError *error = [NSError errorWithDomain:@"com.pixle.KZPropertyMapper" code:code userInfo:userInfo];
@@ -17,8 +16,11 @@ NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUs
   return error;
 }
 
-#define AssertTrueOrReturnBlock(condition, block) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { block(pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd)); return;} }while(0)
+#define AssertTrueOrReturnNoBlock(condition, block) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
+if(!(condition)) { block(pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd)); return NO;} }while(0)
+
+#define AssertTrueOrReturnNo(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
+if(!(condition)) { pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd); return NO;} } while(0)
 
 #define AssertTrueOrReturn(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
 if(!(condition)) { pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd); return;} } while(0)
@@ -32,47 +34,134 @@ if(!(condition)) { pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condit
 #define AssertTrueOrReturnError(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
 if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd);} }while(0)
 
+#define AssertTrueOrReturnErrors(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
+if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd)];} }while(0)
+
 
 #import "KZPropertyMapper.h"
 #import <objc/message.h>
 
+
+@interface KZPropertyDescriptor ()
+@property(nonatomic, copy) NSString *propertyName;
+@property(nonatomic, copy) NSString *mapping;
+@property(nonatomic, copy, readonly) NSString *stringMapping;
+@property(nonatomic, strong) NSMutableArray *validationBlocks;
+
+- (void)validateValue:(id)value error:(__autoreleasing NSError **)error;
+@end
+
 @implementation KZPropertyMapper {
 }
 
-+ (void)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
++ (BOOL)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
 {
+  NSArray *errors = [self validateMapping:parameterMapping withValues:arrayOrDictionary];
+  if (errors.count > 0) {
+    return NO;
+  }
+
   if ([arrayOrDictionary isKindOfClass:NSDictionary.class]) {
-    [self mapValuesFromDictionary:arrayOrDictionary toInstance:instance usingMapping:parameterMapping];
-    return;
+    return [self mapValuesFromDictionary:arrayOrDictionary toInstance:instance usingMapping:parameterMapping];
   }
 
   if ([arrayOrDictionary isKindOfClass:NSArray.class]) {
-    [self mapValuesFromArray:arrayOrDictionary toInstance:instance usingMapping:parameterMapping];
-    return;
+    return [self mapValuesFromArray:arrayOrDictionary toInstance:instance usingMapping:parameterMapping];
   }
 
-  AssertTrueOrReturn([arrayOrDictionary isKindOfClass:NSArray.class] || [arrayOrDictionary isKindOfClass:NSDictionary.class]);
+  AssertTrueOrReturnNo([arrayOrDictionary isKindOfClass:NSArray.class] || [arrayOrDictionary isKindOfClass:NSDictionary.class]);
+  return YES;
 }
 
-+ (void)mapValuesFromDictionary:(NSDictionary *)sourceDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
++ (BOOL)mapValuesFromDictionary:(NSDictionary *)sourceDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
 {
-  AssertTrueOrReturn([sourceDictionary isKindOfClass:NSDictionary.class]);
+  AssertTrueOrReturnNo([sourceDictionary isKindOfClass:NSDictionary.class]);
 
   [sourceDictionary enumerateKeysAndObjectsUsingBlock:^(id property, id value, BOOL *stop) {
     id subMapping = [parameterMapping objectForKey:property];
     [self mapValue:value toInstance:instance usingMapping:subMapping sourcePropertyName:property];
   }];
+
+  return YES;
 }
 
-+ (void)mapValuesFromArray:(NSArray *)sourceArray toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
++ (NSArray *)validateMapping:(NSDictionary *)mapping withValues:(id)values
 {
-  AssertTrueOrReturn([sourceArray isKindOfClass:NSArray.class]);
+  AssertTrueOrReturnErrors([mapping isKindOfClass:NSDictionary.class]);
+
+  if ([values isKindOfClass:NSDictionary.class]) {
+    return [self validateMapping:mapping withValuesDictionary:values];
+  } else {
+    return [self validateMapping:mapping withValuesArray:values];
+  }
+}
+
++ (NSArray *)validateMapping:(NSDictionary *)mapping withValuesArray:(NSArray *)values
+{
+  NSMutableArray *errors = [NSMutableArray new];
+  [mapping enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
+    AssertTrueOrReturn([key isKindOfClass:NSNumber.class]);
+
+    id value = [values objectAtIndex:key.unsignedIntValue];
+
+    //! submapping
+    if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
+      NSArray *validationErrors = [self validateMapping:obj withValues:value];
+      if (validationErrors) {
+        [errors addObjectsFromArray:validationErrors];
+      }
+    }
+
+    if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
+      KZPropertyDescriptor *descriptor = obj;
+      NSError *validationError = nil;
+      [descriptor validateValue:value error:&validationError];
+      if (validationError) {
+        [errors addObject:validationError];
+      }
+    }
+  }];
+
+  return errors;
+}
+
++ (NSArray *)validateMapping:(NSDictionary *)mapping withValuesDictionary:(NSDictionary *)values
+{
+  NSMutableArray *errors = [NSMutableArray new];
+  [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+    id value = [values objectForKey:key];
+
+    //! submapping
+    if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
+      NSArray *validationErrors = [self validateMapping:obj withValues:value];
+      if (validationErrors) {
+        [errors addObjectsFromArray:validationErrors];
+      }
+    }
+
+    if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
+      KZPropertyDescriptor *descriptor = obj;
+      NSError *validationError = nil;
+      [descriptor validateValue:value error:&validationError];
+      if (validationError) {
+        [errors addObject:validationError];
+      }
+    }
+  }];
+
+  return errors;
+}
+
++ (BOOL)mapValuesFromArray:(NSArray *)sourceArray toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
+{
+  AssertTrueOrReturnNo([sourceArray isKindOfClass:NSArray.class]);
 
   [sourceArray enumerateObjectsUsingBlock:^(id value, NSUInteger idx, BOOL *stop) {
     NSNumber *key = @(idx);
     id subMapping = [parameterMapping objectForKey:key];
     [self mapValue:value toInstance:instance usingMapping:subMapping sourcePropertyName:[NSString stringWithFormat:@"Index %d", key.integerValue]];
   }];
+  return YES;
 }
 
 + (void)mapValue:(id)value toInstance:(id)instance usingMapping:(id)mapping sourcePropertyName:(NSString *)propertyName
@@ -85,7 +174,7 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
     if ([value isKindOfClass:NSDictionary.class] || [value isKindOfClass:NSArray.class]) {
       [self mapValuesFrom:value toInstance:instance usingMapping:mapping];
     } else if (_shouldLogIgnoredValues) {
-        NSLog(@"KZPropertyMapper: Ignoring property %@ as it's not in mapping dictionary", propertyName);
+      NSLog(@"KZPropertyMapper: Ignoring property %@ as it's not in mapping dictionary", propertyName);
     }
     return;
   }
@@ -100,31 +189,42 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   [self mapValue:value toInstance:instance usingMapping:mapping];
 }
 
-+ (void)mapValue:(id)value toInstance:(id)instance usingMapping:(NSString *)mapping
++ (BOOL)mapValue:(id)value toInstance:(id)instance usingMapping:(id)mapping
 {
-  AssertTrueOrReturn([mapping isKindOfClass:NSString.class]);
+  if ([mapping isKindOfClass:KZPropertyDescriptor.class]) {
+    return [self mapValue:value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)mapping];
+  }
+
+  return [self mapValue:value toInstance:instance usingStringMapping:mapping];
+
+}
+
++ (BOOL)mapValue:(id)value toInstance:(id)instance usingStringMapping:(NSString *)mapping
+{
+  NSLog(@"mapping %@", mapping);
+  AssertTrueOrReturnNo([mapping isKindOfClass:NSString.class]);
 
   //! normal 1 : 1 mapping
   if (![mapping hasPrefix:@"@"]) {
     [self setValue:value withMapping:mapping onInstance:instance];
-    return;
+    return YES;
   }
 
   NSArray *components = [mapping componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"@()"]];
-  AssertTrueOrReturn(components.count == 4);
+  AssertTrueOrReturnNo(components.count == 4);
 
   NSString *mappingType = [components objectAtIndex:1];
   NSString *boxingParametersString = [components objectAtIndex:2];
 
   //! extract and cleanup params
   NSArray *boxingParameters = [boxingParametersString componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@","]];
-  
+
   NSMutableArray *boxingParametersProcessed = [NSMutableArray new];
   [boxingParameters enumerateObjectsUsingBlock:^(NSString *param, NSUInteger idx, BOOL *stop) {
     [boxingParametersProcessed addObject:[param stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
   }];
   boxingParameters = [boxingParametersProcessed copy];
-  
+
   NSString *targetProperty = [boxingParameters lastObject];
   boxingParameters = [boxingParameters subarrayWithRange:NSMakeRange(0, boxingParameters.count - 1)];
 
@@ -132,27 +232,39 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   id boxedValue = nil;
   if (boxingParameters.count > 0) {
     SEL mappingSelector = NSSelectorFromString([NSString stringWithFormat:@"boxValueAs%@OnTarget:value:params:", mappingType]);
-    AssertTrueOrReturnBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
+    AssertTrueOrReturnNoBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
     });
-    id (*objc_msgSendTyped)(id, SEL, id, id, NSArray *) = (void*)objc_msgSend;
+    id (*objc_msgSendTyped)(id, SEL, id, id, NSArray *) = (void *)objc_msgSend;
     boxedValue = objc_msgSendTyped(self, mappingSelector, instance, value, boxingParameters);
   } else {
     SEL mappingSelector = NSSelectorFromString([NSString stringWithFormat:@"boxValueAs%@:", mappingType]);
-    AssertTrueOrReturnBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
+    AssertTrueOrReturnNoBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
     });
-    id (*objc_msgSendTyped)(id, SEL, id) = (void*)objc_msgSend;
+    id (*objc_msgSendTyped)(id, SEL, id) = (void *)objc_msgSend;
     boxedValue = objc_msgSendTyped(self, mappingSelector, value);
   }
 
   if (!boxedValue) {
-    return;
+    return NO;
   }
   [self setValue:boxedValue withMapping:targetProperty onInstance:instance];
+  return YES;
+}
+
++ (BOOL)mapValue:(id)value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)descriptor
+{
+  NSError *error = nil;
+  [descriptor validateValue:value error:&error];
+  if (error) {
+    return NO;
+  }
+
+  [self mapValue:value toInstance:instance usingStringMapping:descriptor.stringMapping];
+  return YES;
 }
 
 + (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
 {
-  
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass]) {
     [instance willChangeValueForKey:mapping];
@@ -166,7 +278,7 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
 
 + (NSURL *)boxValueAsURL:(id)value __unused
 {
-  if(value == nil){
+  if (value == nil) {
     return nil;
   }
   AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
@@ -175,7 +287,7 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
 
 + (NSDate *)boxValueAsDate:(id)value __unused
 {
-  if(value == nil){
+  if (value == nil) {
     return nil;
   }
   AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
@@ -201,7 +313,7 @@ if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid
   SEL selector = NSSelectorFromString([params objectAtIndex:0]);
 
   AssertTrueOrReturnNil([target respondsToSelector:selector]);
-  id (*objc_msgSendTyped)(id, SEL, id) = (void*)objc_msgSend;
+  id (*objc_msgSendTyped)(id, SEL, id) = (void *)objc_msgSend;
   return objc_msgSendTyped(target, selector, value);
 }
 
@@ -216,6 +328,66 @@ static BOOL _shouldLogIgnoredValues = YES;
 + (void)logIgnoredValues:(BOOL)logIgnoredValues
 {
   _shouldLogIgnoredValues = logIgnoredValues;
+}
+
+@end
+
+
+@implementation KZPropertyDescriptor
+
++ (instancetype)descriptorWithPropertyName:(NSString *)name andMapping:(NSString *)mapping
+{
+  return [[KZPropertyDescriptor alloc] initWithPropertyName:name andMapping:mapping];
+}
+
+- (id)initWithPropertyName:(NSString *)name andMapping:(NSString *)mapping
+{
+  self = [super init];
+  if (self) {
+    _propertyName = name;
+    _mapping = mapping;
+  }
+
+  return self;
+}
+
+- (KZPropertyDescriptor * (^)())isRequired
+{
+  [self addValidatonWithBlock:^(id value) {
+    if ([value isKindOfClass:NSNull.class] || !value) {
+      return pixle_NSErrorMake(@"isRequired failed on field %@", kErrorCodeInternal, nil, nil);
+    }
+    return (NSError *)nil;
+  }];
+
+  return ^() {
+    return self;
+  };
+}
+
+- (void)addValidatonWithBlock:(NSError * (^)(id))validationBlock
+{
+  if (!self.validationBlocks) {
+    self.validationBlocks = [NSMutableArray new];
+  }
+
+  [self.validationBlocks addObject:validationBlock];
+}
+
+- (void)validateValue:(id)value error:(__autoreleasing NSError **)error
+{
+  [self.validationBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    NSError *(^validationBlock)(id) = obj;
+    *error = validationBlock(value);
+    if (error) {
+      *stop = YES;
+    }
+  }];
+}
+
+- (NSString *)stringMapping
+{
+  return [NSString stringWithFormat:@"@%@(%@)", self.mapping, self.propertyName];
 }
 
 @end
