@@ -16,14 +16,16 @@
 
 - (BOOL)updateFromDictionary:(NSDictionary *)dictionary
 {
-  return [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
+  BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
     @"videoURL" : KZMap(URL, contentURL).isRequired(),
-    @"name" : KZProperty(title),
+    @"name" : KZProperty(title).rangeCheck(5, 12),
     @"videoType" : KZProperty(type),
     @"sub_object" : @{
       @"title" : KZProperty(uniqueID)
     }
   }];
+
+  return result;
 }
 
 @end
@@ -31,7 +33,7 @@
 SPEC_BEGIN(KZPropertyMapperSpec)
 
   describe(@"KZPropertyMapper", ^{
-    context(@"when used to map source data container to model object", ^{
+    context(@"basic", ^{
 
       __block NSDictionary *mapping;
       __block NSDictionary *sourceDictionary;
@@ -111,7 +113,7 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         [[testObject.uniqueID should] equal:@123];
       });
 
-      context(@"and using boxing functionality", ^{
+      context(@"using boxing functionality", ^{
         it(@"should support @URL boxing", ^{
           [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
           [[testObject.contentURL should] equal:[NSURL URLWithString:@"http://test.com/video.mp4"]];
@@ -119,11 +121,11 @@ SPEC_BEGIN(KZPropertyMapperSpec)
       });
 
 
-      context(@"and using advanced mapping features", ^{
+      context(@"using advanced mapping features", ^{
         beforeEach(^{
           [testObject updateFromDictionary:sourceDictionary];
         });
-        
+
         it(@"should work for base properties", ^{
           [[testObject.type should] equal:sourceDictionary[@"name"]];
         });
@@ -131,15 +133,60 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         it(@"should support boxing functionality", ^{
           [[testObject.videoURL should] beKindOfClass:NSURL.class];
         });
-        
 
-        context(@"and using validators", ^{
-          it(@"should fail isRequired validator if property is not found on source dictionary", ^{
+
+        context(@"using validators", ^{
+          it(@"should fail isRequired validator if property is missing", ^{
             NSDictionary *dictionary = @{@"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-            
-            BOOL result = [testObject updateFromDictionary:dictionary];
+
+            KZPropertyTestObject *testInstance = [KZPropertyTestObject new];
+            BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
+              @"videoURL" : KZMapT(testInstance, URL, contentURL).isRequired()
+            }];
             [[theValue(result) should] beFalse];
           });
+
+          it(@"should succed isRequired validator if ok", ^{
+            NSDictionary *dictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
+
+            KZPropertyTestObject *testInstance = [KZPropertyTestObject new];
+            BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
+              @"videoURL" : KZMapT(testInstance, URL, contentURL).isRequired()
+            }];
+            [[theValue(result) should] beTrue];
+          });
+
+          it(@"should fail rangeCheck validator if missing", ^{
+            NSDictionary *dictionary = @{@"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
+
+            KZPropertyTestObject *testInstance = [KZPropertyTestObject new];
+            BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
+              @"name" : KZPropertyT(testInstance, title).rangeCheck(5, 10)
+            }];
+
+            [[theValue(result) should] beFalse];
+          });
+
+          it(@"should fail rangeCheck validator if outside range", ^{
+            NSDictionary *dictionary = @{@"name" : @"Some Cool Video dsadsa dsa dsa", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
+
+            KZPropertyTestObject *testInstance = [KZPropertyTestObject new];
+            BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
+              @"name" : KZPropertyT(testInstance, title).rangeCheck(5, 10)
+            }];
+            [[theValue(result) should] beFalse];
+          });
+
+          it(@"should succed rangeCheck validator if ok", ^{
+            NSDictionary *dictionary = @{@"name" : @"Some Cool", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
+
+            KZPropertyTestObject *testInstance = [KZPropertyTestObject new];
+            BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
+              @"name" : KZPropertyT(testInstance, title).rangeCheck(5, 11)
+            }];
+            [[theValue(result) should] beTrue];
+          });
+
         });
 
       });

@@ -48,7 +48,7 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 @property(nonatomic, copy, readonly) NSString *stringMapping;
 @property(nonatomic, strong) NSMutableArray *validationBlocks;
 
-- (void)validateValue:(id)value error:(__autoreleasing NSError **)error;
+- (NSError *)validateValue:(id)value;
 @end
 
 @implementation KZPropertyMapper {
@@ -114,8 +114,7 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 
     if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
       KZPropertyDescriptor *descriptor = obj;
-      NSError *validationError = nil;
-      [descriptor validateValue:value error:&validationError];
+      NSError *validationError = [descriptor validateValue:value];
       if (validationError) {
         [errors addObject:validationError];
       }
@@ -141,8 +140,7 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 
     if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
       KZPropertyDescriptor *descriptor = obj;
-      NSError *validationError = nil;
-      [descriptor validateValue:value error:&validationError];
+      NSError *validationError = [descriptor validateValue:value];
       if (validationError) {
         [errors addObject:validationError];
       }
@@ -253,8 +251,7 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 
 + (BOOL)mapValue:(id)value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)descriptor
 {
-  NSError *error = nil;
-  [descriptor validateValue:value error:&error];
+  NSError *error = [descriptor validateValue:value];
   if (error) {
     return NO;
   }
@@ -353,14 +350,30 @@ static BOOL _shouldLogIgnoredValues = YES;
 
 - (KZPropertyDescriptor * (^)())isRequired
 {
-  [self addValidatonWithBlock:^(id value) {
-    if ([value isKindOfClass:NSNull.class] || !value) {
-      return pixle_NSErrorMake(@"isRequired failed on field %@", kErrorCodeInternal, nil, nil);
-    }
-    return (NSError *)nil;
-  }];
+  __weak typeof (self.propertyName) weakPropertyName = self.propertyName;
 
   return ^() {
+    [self addValidatonWithBlock:^(id value) {
+      if ([value isKindOfClass:NSNull.class] || !value) {
+        return pixle_NSErrorMake([NSString stringWithFormat:@"isRequired failed on field %@", weakPropertyName], kErrorCodeInternal, nil, nil);
+      }
+      return (NSError *)nil;
+    }];
+    return self;
+  };
+}
+
+- (KZPropertyDescriptor * (^)(NSUInteger, NSUInteger))rangeCheck
+{
+  __weak typeof (self.propertyName) weakPropertyName = self.propertyName;
+
+  return ^(NSUInteger min, NSUInteger max) {
+    [self addValidatonWithBlock:^(NSString *value) {
+      if (![value isKindOfClass:NSString.class] || !value || value.length < min || value.length > max) {
+        return pixle_NSErrorMake([NSString stringWithFormat:@"rangeCheck failed on field %@", weakPropertyName], kErrorCodeInternal, nil, nil);
+      }
+      return (NSError *)nil;
+    }];
     return self;
   };
 }
@@ -374,19 +387,24 @@ static BOOL _shouldLogIgnoredValues = YES;
   [self.validationBlocks addObject:validationBlock];
 }
 
-- (void)validateValue:(id)value error:(__autoreleasing NSError **)error
+- (NSError *)validateValue:(id)value
 {
+  __block NSError *error = nil;
   [self.validationBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    NSError *(^validationBlock)(id) = obj;
-    *error = validationBlock(value);
+    __autoreleasing NSError *(^validationBlock)(id) = obj;
+    error = validationBlock(value);
     if (error) {
       *stop = YES;
     }
   }];
+  return error;
 }
 
 - (NSString *)stringMapping
 {
+  if (!self.mapping.length) {
+    return self.propertyName;
+  }
   return [NSString stringWithFormat:@"@%@(%@)", self.mapping, self.propertyName];
 }
 

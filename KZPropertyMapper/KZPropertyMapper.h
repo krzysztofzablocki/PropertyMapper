@@ -7,8 +7,11 @@
 
 #import <Foundation/Foundation.h>
 
-#define KZMap(mapping, property) ({self.property, [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
-#define KZProperty(property) ({self.property, [NSString stringWithCString:#property encoding:NSUTF8StringEncoding];})
+#define KZMap(mapping, property) KZMapT(self, mapping, property)
+#define KZProperty(property) KZPropertyT(self, property)
+
+#define KZMapT(target, mapping, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
+#define KZPropertyT(target, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:nil];})
 
 
 @interface KZPropertyMapper : NSObject
@@ -21,6 +24,7 @@
 
 @interface KZPropertyDescriptor : NSObject
 @property (nonatomic, copy, readonly) KZPropertyDescriptor* (^isRequired)();
+@property (nonatomic, copy, readonly) KZPropertyDescriptor* (^rangeCheck)(NSUInteger, NSUInteger);
 
 + (instancetype)descriptorWithPropertyName:(NSString*)name andMapping:(NSString *)mapping;
 - (id)initWithPropertyName:(NSString *)name andMapping:(NSString *)mapping;
