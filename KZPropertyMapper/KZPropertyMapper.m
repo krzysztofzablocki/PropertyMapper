@@ -3,43 +3,10 @@
 //
 //
 //
-typedef NS_ENUM(NSInteger, kErrorCode) {
-  kErrorCodeInternal = 44324344,
-};
-
-NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUserInfo, SEL selector) {
-  NSMutableDictionary *userInfo = [aUserInfo mutableCopy];
-  userInfo[NSLocalizedDescriptionKey] = message;
-  NSError *error = [NSError errorWithDomain:@"com.pixle.KZPropertyMapper" code:code userInfo:userInfo];
-
-  NSLog(@"KZPropertyMapper Error: %@", error);
-  return error;
-}
-
-#define AssertTrueOrReturnNoBlock(condition, block) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { block(pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd)); return NO;} }while(0)
-
-#define AssertTrueOrReturnNo(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd); return NO;} } while(0)
-
-#define AssertTrueOrReturn(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd); return;} } while(0)
-
-#define AssertTrueOrReturnNilBlock(condition, block) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { block(pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd)); return nil;} } while(0)
-
-#define AssertTrueOrReturnNil(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd); return nil;}} while(0)
-
-#define AssertTrueOrReturnError(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { return pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd);} }while(0)
-
-#define AssertTrueOrReturnErrors(condition) do{ NSAssert((condition), @"Invalid condition not satisfying: %s", #condition);\
-if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Invalid condition not satisfying: %s", #condition], kErrorCodeInternal, nil, _cmd)];} }while(0)
-
 
 #import "KZPropertyMapper.h"
 #import <objc/message.h>
+#import "KZPropertyMapperCommon.h"
 
 
 @interface KZPropertyDescriptor ()
@@ -48,7 +15,7 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 @property(nonatomic, copy, readonly) NSString *stringMapping;
 @property(nonatomic, strong) NSMutableArray *validationBlocks;
 
-- (NSError *)validateValue:(id)value;
+- (NSArray *)validateValue:(id)value;
 @end
 
 @implementation KZPropertyMapper {
@@ -56,8 +23,16 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 
 + (BOOL)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
 {
+  return [self mapValuesFrom:arrayOrDictionary toInstance:instance usingMapping:parameterMapping errors:nil];
+}
+
++ (BOOL)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping errors:(__autoreleasing NSArray **)oErrors
+{
   NSArray *errors = [self validateMapping:parameterMapping withValues:arrayOrDictionary];
   if (errors.count > 0) {
+    if (oErrors) {
+      *oErrors = errors;
+    }
     return NO;
   }
 
@@ -83,71 +58,6 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
   }];
 
   return YES;
-}
-
-+ (NSArray *)validateMapping:(NSDictionary *)mapping withValues:(id)values
-{
-  AssertTrueOrReturnErrors([mapping isKindOfClass:NSDictionary.class]);
-
-  if ([values isKindOfClass:NSDictionary.class]) {
-    return [self validateMapping:mapping withValuesDictionary:values];
-  } else {
-    return [self validateMapping:mapping withValuesArray:values];
-  }
-}
-
-+ (NSArray *)validateMapping:(NSDictionary *)mapping withValuesArray:(NSArray *)values
-{
-  NSMutableArray *errors = [NSMutableArray new];
-  [mapping enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
-    AssertTrueOrReturn([key isKindOfClass:NSNumber.class]);
-
-    id value = [values objectAtIndex:key.unsignedIntValue];
-
-    //! submapping
-    if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
-      NSArray *validationErrors = [self validateMapping:obj withValues:value];
-      if (validationErrors) {
-        [errors addObjectsFromArray:validationErrors];
-      }
-    }
-
-    if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
-      KZPropertyDescriptor *descriptor = obj;
-      NSError *validationError = [descriptor validateValue:value];
-      if (validationError) {
-        [errors addObject:validationError];
-      }
-    }
-  }];
-
-  return errors;
-}
-
-+ (NSArray *)validateMapping:(NSDictionary *)mapping withValuesDictionary:(NSDictionary *)values
-{
-  NSMutableArray *errors = [NSMutableArray new];
-  [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
-    id value = [values objectForKey:key];
-
-    //! submapping
-    if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
-      NSArray *validationErrors = [self validateMapping:obj withValues:value];
-      if (validationErrors) {
-        [errors addObjectsFromArray:validationErrors];
-      }
-    }
-
-    if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
-      KZPropertyDescriptor *descriptor = obj;
-      NSError *validationError = [descriptor validateValue:value];
-      if (validationError) {
-        [errors addObject:validationError];
-      }
-    }
-  }];
-
-  return errors;
 }
 
 + (BOOL)mapValuesFromArray:(NSArray *)sourceArray toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
@@ -251,8 +161,8 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
 
 + (BOOL)mapValue:(id)value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)descriptor
 {
-  NSError *error = [descriptor validateValue:value];
-  if (error) {
+  NSArray *errors = [descriptor validateValue:value];
+  if (errors.count > 0) {
     return NO;
   }
 
@@ -271,6 +181,74 @@ if(!(condition)) { return @[pixle_NSErrorMake([NSString stringWithFormat:@"Inval
     [instance setValue:value forKey:mapping];
   }
 }
+
+#pragma mark - Validation
+
++ (NSArray *)validateMapping:(NSDictionary *)mapping withValues:(id)values
+{
+  AssertTrueOrReturnErrors([mapping isKindOfClass:NSDictionary.class]);
+
+  if ([values isKindOfClass:NSDictionary.class]) {
+    return [self validateMapping:mapping withValuesDictionary:values];
+  } else {
+    return [self validateMapping:mapping withValuesArray:values];
+  }
+}
+
++ (NSArray *)validateMapping:(NSDictionary *)mapping withValuesArray:(NSArray *)values
+{
+  NSMutableArray *errors = [NSMutableArray new];
+  [mapping enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
+    AssertTrueOrReturn([key isKindOfClass:NSNumber.class]);
+
+    id value = [values objectAtIndex:key.unsignedIntValue];
+
+    //! submapping
+    if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
+      NSArray *validationErrors = [self validateMapping:obj withValues:value];
+      if (validationErrors) {
+        [errors addObjectsFromArray:validationErrors];
+      }
+    }
+
+    if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
+      KZPropertyDescriptor *descriptor = obj;
+      NSArray *validationErrors = [descriptor validateValue:value];
+      if (validationErrors.count > 0) {
+        [errors addObjectsFromArray:validationErrors];
+      }
+    }
+  }];
+
+  return errors;
+}
+
++ (NSArray *)validateMapping:(NSDictionary *)mapping withValuesDictionary:(NSDictionary *)values
+{
+  NSMutableArray *errors = [NSMutableArray new];
+  [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+    id value = [values objectForKey:key];
+
+    //! submapping
+    if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
+      NSArray *validationErrors = [self validateMapping:obj withValues:value];
+      if (validationErrors) {
+        [errors addObjectsFromArray:validationErrors];
+      }
+    }
+
+    if ([obj isKindOfClass:KZPropertyDescriptor.class]) {
+      KZPropertyDescriptor *descriptor = obj;
+      NSArray *validationErrors = [descriptor validateValue:value];
+      if (validationErrors.count > 0) {
+        [errors addObjectsFromArray:validationErrors];
+      }
+    }
+  }];
+
+  return errors;
+}
+
 #pragma mark - Dynamic boxing
 
 + (NSURL *)boxValueAsURL:(id)value __unused
@@ -348,37 +326,7 @@ static BOOL _shouldLogIgnoredValues = YES;
   return self;
 }
 
-- (KZPropertyDescriptor * (^)())isRequired
-{
-  __weak typeof (self.propertyName) weakPropertyName = self.propertyName;
-
-  return ^() {
-    [self addValidatonWithBlock:^(id value) {
-      if ([value isKindOfClass:NSNull.class] || !value) {
-        return pixle_NSErrorMake([NSString stringWithFormat:@"isRequired failed on field %@", weakPropertyName], kErrorCodeInternal, nil, nil);
-      }
-      return (NSError *)nil;
-    }];
-    return self;
-  };
-}
-
-- (KZPropertyDescriptor * (^)(NSUInteger, NSUInteger))rangeCheck
-{
-  __weak typeof (self.propertyName) weakPropertyName = self.propertyName;
-
-  return ^(NSUInteger min, NSUInteger max) {
-    [self addValidatonWithBlock:^(NSString *value) {
-      if (![value isKindOfClass:NSString.class] || !value || value.length < min || value.length > max) {
-        return pixle_NSErrorMake([NSString stringWithFormat:@"rangeCheck failed on field %@", weakPropertyName], kErrorCodeInternal, nil, nil);
-      }
-      return (NSError *)nil;
-    }];
-    return self;
-  };
-}
-
-- (void)addValidatonWithBlock:(NSError * (^)(id))validationBlock
+- (void)addValidatonWithBlock:(NSError * (^)(id, NSString *))validationBlock
 {
   if (!self.validationBlocks) {
     self.validationBlocks = [NSMutableArray new];
@@ -387,17 +335,17 @@ static BOOL _shouldLogIgnoredValues = YES;
   [self.validationBlocks addObject:validationBlock];
 }
 
-- (NSError *)validateValue:(id)value
+- (NSArray *)validateValue:(id)value
 {
-  __block NSError *error = nil;
+  NSMutableArray *errors = [NSMutableArray new];
   [self.validationBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    __autoreleasing NSError *(^validationBlock)(id) = obj;
-    error = validationBlock(value);
+    NSError *(^validationBlock)(id, NSString *) = obj;
+    NSError *error = validationBlock(value, self.propertyName);
     if (error) {
-      *stop = YES;
+      [errors addObject:error];
     }
   }];
-  return error;
+  return errors;
 }
 
 - (NSString *)stringMapping

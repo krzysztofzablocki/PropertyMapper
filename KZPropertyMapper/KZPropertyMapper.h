@@ -16,6 +16,7 @@
 
 @interface KZPropertyMapper : NSObject
 + (BOOL)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping;
++ (BOOL)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping errors:(__autoreleasing NSArray**)errors;
 @end
 
 @interface KZPropertyMapper (Debug)
@@ -23,9 +24,7 @@
 @end
 
 @interface KZPropertyDescriptor : NSObject
-@property (nonatomic, copy, readonly) KZPropertyDescriptor* (^isRequired)();
-@property (nonatomic, copy, readonly) KZPropertyDescriptor* (^rangeCheck)(NSUInteger, NSUInteger);
-
 + (instancetype)descriptorWithPropertyName:(NSString*)name andMapping:(NSString *)mapping;
 - (id)initWithPropertyName:(NSString *)name andMapping:(NSString *)mapping;
+- (void)addValidatonWithBlock:(NSError * (^)(id value, NSString *propertyName))validationBlock;
 @end

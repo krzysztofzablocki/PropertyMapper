@@ -23,6 +23,8 @@
 		CDAC632E17A0EF1A00F5452A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDAC632C17A0EF1A00F5452A /* InfoPlist.strings */; };
 		CDAC633C17A0EF4000F5452A /* KZPropertyMapperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */; };
 		CDAC634017A0EF4C00F5452A /* KZPropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAC633F17A0EF4C00F5452A /* KZPropertyMapper.m */; };
+		E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D23E7D0B671E20A393C1 /* KZPropertyDescriptor+Validators.m */; };
+		E291DF66CED6014407891C85 /* KZPropertyMapperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,10 @@
 		CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperTests.m; sourceTree = "<group>"; };
 		CDAC633E17A0EF4C00F5452A /* KZPropertyMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZPropertyMapper.h; sourceTree = "<group>"; };
 		CDAC633F17A0EF4C00F5452A /* KZPropertyMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapper.m; sourceTree = "<group>"; };
+		E291D059E10E8157C1AAE291 /* KZPropertyDescriptor+Validators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KZPropertyDescriptor+Validators.h"; sourceTree = "<group>"; };
+		E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperCommon.m; sourceTree = "<group>"; };
+		E291D23E7D0B671E20A393C1 /* KZPropertyDescriptor+Validators.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KZPropertyDescriptor+Validators.m"; sourceTree = "<group>"; };
+		E291D3F00477D230DD4BEDA0 /* KZPropertyMapperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZPropertyMapperCommon.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +173,10 @@
 			children = (
 				CDAC633E17A0EF4C00F5452A /* KZPropertyMapper.h */,
 				CDAC633F17A0EF4C00F5452A /* KZPropertyMapper.m */,
+				E291D23E7D0B671E20A393C1 /* KZPropertyDescriptor+Validators.m */,
+				E291D059E10E8157C1AAE291 /* KZPropertyDescriptor+Validators.h */,
+				E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */,
+				E291D3F00477D230DD4BEDA0 /* KZPropertyMapperCommon.h */,
 			);
 			name = KZPropertyMapper;
 			path = ../KZPropertyMapper;
@@ -317,6 +327,7 @@
 			files = (
 				CDAC631217A0EF1A00F5452A /* main.m in Sources */,
 				CDAC631617A0EF1A00F5452A /* AppDelegate.m in Sources */,
+				E291DF66CED6014407891C85 /* KZPropertyMapperCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +337,7 @@
 			files = (
 				CDAC633C17A0EF4000F5452A /* KZPropertyMapperTests.m in Sources */,
 				CDAC634017A0EF4C00F5452A /* KZPropertyMapper.m in Sources */,
+				E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
