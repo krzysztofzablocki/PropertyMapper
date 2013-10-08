@@ -4,297 +4,173 @@
 #import "TestObject.h"
 
 SPEC_BEGIN(KZPropertyMapperValidatorSpec)
-  describe(@"KZPropertyMapper", ^{
-    context(@"using validators", ^{
-
-      __block NSDictionary *mapping;
-      __block NSDictionary *sourceDictionary;
-      __block TestObject *testObject;
-
-      beforeEach(^{
-        mapping = @{@"videoURL" : @"@URL(contentURL)",
-          @"name" : @"title",
-          @"videoType" : @"type",
-          @"sub_object" : @{
-            @"title" : @"uniqueID"}
-        };
-        sourceDictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-        testObject = [TestObject new];
-      });
-
-      afterEach(^{
-        mapping = nil;
-        sourceDictionary = nil;
-        testObject = nil;
-      });
-
+  describe(@"Mapper", ^{
+    context(@"while validating", ^{
 
       it(@"should fail isRequired validator if property is missing", ^{
-        NSDictionary *dictionary = @{@"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"videoURL" : KZMapT(testInstance, URL, contentURL).isRequired()
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"Some Cool Video"} toInstance:[TestObject new] usingMapping:@{
+          @"videoURL" : KZMapT([TestObject new], URL, contentURL).isRequired()
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result) should] beFalse];
       });
 
       it(@"should succed isRequired validator if ok", ^{
-        NSDictionary *dictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"videoURL" : KZMapT(testInstance, URL, contentURL).isRequired()
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"videoURL" : @"http://test.com/video.mp4"} toInstance:[TestObject new] usingMapping:@{
+          @"videoURL" : KZMapT([TestObject new], URL, contentURL).isRequired()
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result) should] beTrue];
       });
 
       it(@"should fail lengthRange validator if missing", ^{
-        NSDictionary *dictionary = @{@"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).lengthRange(5, 10)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"videoType" : [NSNull null]} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).lengthRange(5, 10)
         }];
 
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should fail lengthRange validator if outside range", ^{
-        NSDictionary *dictionary = @{@"name" : @"Some Cool Video dsadsa dsa dsa", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).lengthRange(5, 10)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"Some Cool Video dsadsa dsa dsa"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).lengthRange(5, 10)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed lengthRange validator if ok", ^{
-        NSDictionary *dictionary = @{@"name" : @"Some Cool", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).lengthRange(5, 11)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"Some Cool"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).lengthRange(5, 11)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
       it(@"should succed regex validator if ok", ^{
-        NSDictionary *dictionary = @{@"name" : @"BC", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).matchesRegEx([NSRegularExpression regularExpressionWithPattern:@"\\b(a|b)(c|d)\\b" options:NSRegularExpressionCaseInsensitive error:nil])
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BC"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).matchesRegEx([NSRegularExpression regularExpressionWithPattern:@"\\b(a|b)(c|d)\\b" options:NSRegularExpressionCaseInsensitive error:nil])
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
       it(@"should fail regex validator if doens't match", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).matchesRegEx([NSRegularExpression regularExpressionWithPattern:@"\\b(a|b)(c|d)\\b" options:NSRegularExpressionCaseInsensitive error:nil])
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).matchesRegEx([NSRegularExpression regularExpressionWithPattern:@"\\b(a|b)(c|d)\\b" options:NSRegularExpressionCaseInsensitive error:nil])
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should fail length validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).length(10)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).length(10)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed length validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).length(3)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).length(3)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
       it(@"should fail minLength validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).minLength(10)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).minLength(10)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed minLength validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).minLength(3)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).minLength(3)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
       it(@"should fail maxLength validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).maxLength(2)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).maxLength(2)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed maxLength validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).maxLength(3)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).maxLength(3)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
       it(@"should fail oneOf validator if not found", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
 
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).oneOf(@[@"aba", @"baba"])
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).oneOf(@[@"aba", @"baba"])
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed oneOf validator if wrong length", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).oneOf(@[@"BCd", @"baba"])
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).oneOf(@[@"BCd", @"baba"])
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
       it(@"should fail equalTo", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).equalTo(@"aba")
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).equalTo(@"aba")
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed equalTo", ^{
-        NSDictionary *dictionary = @{@"name" : @"BCd", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
-
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:testInstance usingMapping:@{
-          @"name" : KZPropertyT(testInstance, title).equalTo(@"BCd")
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"BCd"} toInstance:[TestObject new] usingMapping:@{
+          @"name" : KZPropertyT([TestObject new], title).equalTo(@"BCd")
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
 
       it(@"should fail max", ^{
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:testInstance usingMapping:@{
-          @"number" : KZPropertyT(testInstance, number).max(2)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:[TestObject new] usingMapping:@{
+          @"number" : KZPropertyT([TestObject new], number).max(2)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed max", ^{
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @2} toInstance:testInstance usingMapping:@{
-          @"number" : KZPropertyT(testInstance, number).max(2)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @2} toInstance:[TestObject new] usingMapping:@{
+          @"number" : KZPropertyT([TestObject new], number).max(2)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
 
       it(@"should fail min", ^{
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:testInstance usingMapping:@{
-          @"number" : KZPropertyT(testInstance, number).min(4)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:[TestObject new] usingMapping:@{
+          @"number" : KZPropertyT([TestObject new], number).min(4)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result)should] beFalse];
       });
 
       it(@"should succed min", ^{
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @2} toInstance:testInstance usingMapping:@{
-          @"number" : KZPropertyT(testInstance, number).min(2)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @2} toInstance:[TestObject new] usingMapping:@{
+          @"number" : KZPropertyT([TestObject new], number).min(2)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result)should] beTrue];
       });
 
 
       it(@"should fail range", ^{
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:testInstance usingMapping:@{
-          @"number" : KZPropertyT(testInstance, number).range(1, 2)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:[TestObject new] usingMapping:@{
+          @"number" : KZPropertyT([TestObject new], number).range(1, 2)
         }];
-        [[
-          theValue(result)
-          should] beFalse];
+        [[theValue(result) should] beFalse];
       });
 
       it(@"should succed range", ^{
-        TestObject *testInstance = [TestObject new];
-        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @2} toInstance:testInstance usingMapping:@{
-          @"number" : KZPropertyT(testInstance, number).range(1, 4)
+        BOOL result = [KZPropertyMapper mapValuesFrom:@{@"number" : @2} toInstance:[TestObject new] usingMapping:@{
+          @"number" : KZPropertyT([TestObject new], number).range(1, 4)
         }];
-        [[
-          theValue(result)
-          should] beTrue];
+        [[theValue(result) should] beTrue];
       });
 
 //! TODO: add reverse range test

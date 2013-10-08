@@ -5,8 +5,8 @@
 
 SPEC_BEGIN(KZPropertyMapperSpec)
 
-  describe(@"KZPropertyMapper", ^{
-    context(@"basic", ^{
+  describe(@"Mapper", ^{
+    context(nil, ^{
 
       __block NSDictionary *mapping;
       __block NSDictionary *sourceDictionary;

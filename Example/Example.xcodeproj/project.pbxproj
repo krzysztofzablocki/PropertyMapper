@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */; settings = {}; };
+		2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */; };
 		CDAC630617A0EF1A00F5452A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630517A0EF1A00F5452A /* UIKit.framework */; };
 		CDAC630817A0EF1A00F5452A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630717A0EF1A00F5452A /* Foundation.framework */; };
 		CDAC630A17A0EF1A00F5452A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */; };
@@ -41,7 +41,7 @@
 
 /* Begin PBXFileReference section */
 		6451F34D9FAB46EBB9653A65 /* Pods-ExampleTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleTests.xcconfig"; path = "Pods/Pods-ExampleTests.xcconfig"; sourceTree = SOURCE_ROOT; };
-		8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-ExampleTests.a"; path = "libPods-ExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAC630217A0EF1A00F5452A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAC630517A0EF1A00F5452A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CDAC630717A0EF1A00F5452A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,8 +156,8 @@
 		CDAC632917A0EF1A00F5452A /* ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */,
 				CDAC632A17A0EF1A00F5452A /* Supporting Files */,
+				CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */,
 				E291DAA946FDB826F280B414 /* KZPropertyMapperValidatorTests.m */,
 				E291D986A7D1F8BBF92531C8 /* TestObject.m */,
 				E291D810AA170B1037E11AB8 /* TestObject.h */,
@@ -248,8 +248,6 @@
 			mainGroup = CDAC62F917A0EF1A00F5452A;
 			productRefGroup = CDAC630317A0EF1A00F5452A /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-			);
 			projectRoot = "";
 			targets = (
 				CDAC630117A0EF1A00F5452A /* Example */,
@@ -294,7 +292,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sanbox is not in sync with the Podfile.lock. Run 'pod install'.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 1;
 		};
 		848DB4A605A2423CA6594527 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -309,7 +306,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-ExampleTests-resources.sh\"\n";
-			showEnvVarsInLog = 1;
 		};
 		CDAC632017A0EF1A00F5452A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
