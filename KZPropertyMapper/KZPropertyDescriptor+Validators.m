@@ -12,17 +12,6 @@
 
 @implementation KZPropertyDescriptor (Validators)
 
-- (void)addValidatorWithName:(NSString *)name validation:(BOOL (^)(id value))validator
-{
-  [self addValidatonWithBlock:^(NSString *value, NSString *propertyName) {
-    BOOL validationResult = validator(value);
-    if ([value isKindOfClass:NSNull.class] || !value || !validationResult) {
-      return pixle_NSErrorMake([NSString stringWithFormat:@"%@: validation failed on %@", propertyName, name], kErrorCodeInternal, nil, nil);
-    }
-    return (NSError *)nil;
-  }];
-}
-
 #pragma mark - Strings
 - (KZPropertyDescriptor * (^)())isRequired
 {

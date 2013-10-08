@@ -335,6 +335,17 @@ static BOOL _shouldLogIgnoredValues = YES;
   [self.validationBlocks addObject:validationBlock];
 }
 
+- (void)addValidatorWithName:(NSString *)name validation:(BOOL (^)(id value))validator
+{
+  [self addValidatonWithBlock:^(NSString *value, NSString *propertyName) {
+    BOOL validationResult = validator(value);
+    if ([value isKindOfClass:NSNull.class] || !value || !validationResult) {
+      return pixle_NSErrorMake([NSString stringWithFormat:@"%@: validation failed on %@", propertyName, name], kErrorCodeInternal, nil, nil);
+    }
+    return (NSError *)nil;
+  }];
+}
+
 - (NSArray *)validateValue:(id)value
 {
   NSMutableArray *errors = [NSMutableArray new];
