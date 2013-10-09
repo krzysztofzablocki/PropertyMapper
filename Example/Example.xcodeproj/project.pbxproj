@@ -25,6 +25,7 @@
 		CDAC634017A0EF4C00F5452A /* KZPropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAC633F17A0EF4C00F5452A /* KZPropertyMapper.m */; };
 		E291D408E9E6348D9FD7F6E5 /* TestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D986A7D1F8BBF92531C8 /* TestObject.m */; };
 		E291D7BAF83116A7AB826E9C /* KZPropertyMapperValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E291DAA946FDB826F280B414 /* KZPropertyMapperValidatorTests.m */; };
+		E291DBB3132B563C05EB86DE /* KZPropertyDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E291DFF8365D3F8086AA872F /* KZPropertyDescriptor.m */; };
 		E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D23E7D0B671E20A393C1 /* KZPropertyDescriptor+Validators.m */; };
 		E291DF66CED6014407891C85 /* KZPropertyMapperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */; };
 /* End PBXBuildFile section */
@@ -65,10 +66,12 @@
 		E291D059E10E8157C1AAE291 /* KZPropertyDescriptor+Validators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KZPropertyDescriptor+Validators.h"; sourceTree = "<group>"; };
 		E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperCommon.m; sourceTree = "<group>"; };
 		E291D23E7D0B671E20A393C1 /* KZPropertyDescriptor+Validators.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KZPropertyDescriptor+Validators.m"; sourceTree = "<group>"; };
+		E291D29FD0F60E0C8CEE1D3C /* KZPropertyDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZPropertyDescriptor.h; sourceTree = "<group>"; };
 		E291D3F00477D230DD4BEDA0 /* KZPropertyMapperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZPropertyMapperCommon.h; sourceTree = "<group>"; };
 		E291D810AA170B1037E11AB8 /* TestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObject.h; sourceTree = "<group>"; };
 		E291D986A7D1F8BBF92531C8 /* TestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObject.m; sourceTree = "<group>"; };
 		E291DAA946FDB826F280B414 /* KZPropertyMapperValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperValidatorTests.m; sourceTree = "<group>"; };
+		E291DFF8365D3F8086AA872F /* KZPropertyDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyDescriptor.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +186,8 @@
 				E291D059E10E8157C1AAE291 /* KZPropertyDescriptor+Validators.h */,
 				E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */,
 				E291D3F00477D230DD4BEDA0 /* KZPropertyMapperCommon.h */,
+				E291DFF8365D3F8086AA872F /* KZPropertyDescriptor.m */,
+				E291D29FD0F60E0C8CEE1D3C /* KZPropertyDescriptor.h */,
 			);
 			name = KZPropertyMapper;
 			path = ../KZPropertyMapper;
@@ -342,6 +347,7 @@
 				E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */,
 				E291D7BAF83116A7AB826E9C /* KZPropertyMapperValidatorTests.m in Sources */,
 				E291D408E9E6348D9FD7F6E5 /* TestObject.m in Sources */,
+				E291DBB3132B563C05EB86DE /* KZPropertyDescriptor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

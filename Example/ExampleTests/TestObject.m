@@ -14,7 +14,7 @@
 - (BOOL)updateFromDictionary:(NSDictionary *)dictionary
 {
   BOOL result = [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
-    @"videoURL" : KZMap(URL, contentURL).isRequired(),
+    @"videoURL" : KZBox(URL, contentURL).isRequired(),
     @"name" : KZProperty(title).lengthRange(5, 12),
     @"videoType" : KZProperty(type),
     @"sub_object" : @{
@@ -25,4 +25,7 @@
   return result;
 }
 
+- (id)numberIncrease:(NSNumber*)value {
+  return @(value.integerValue + 1);
+}
 @end

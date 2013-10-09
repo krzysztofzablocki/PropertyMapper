@@ -6,7 +6,7 @@
 
 
 #import <Foundation/Foundation.h>
-#import "KZPropertyMapper.h"
+#import "KZPropertyDescriptor.h"
 
 @interface KZPropertyDescriptor (Validators)
 

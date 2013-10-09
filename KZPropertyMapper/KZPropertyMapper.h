@@ -6,12 +6,15 @@
 
 
 #import <Foundation/Foundation.h>
+#import "KZPropertyDescriptor.h"
 
-#define KZMap(mapping, property) KZMapT(self, mapping, property)
+#define KZBox(mapping, property) KZBoxT(self, mapping, property)
 #define KZProperty(property) KZPropertyT(self, property)
+#define KZCall(method, property) KZCallT(self, method, property)
 
-#define KZMapT(target, mapping, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
+#define KZBoxT(target, mapping, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
 #define KZPropertyT(target, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:nil];})
+#define KZCallT(target, method, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property selector:@selector(method)];})
 
 
 @interface KZPropertyMapper : NSObject
@@ -21,11 +24,4 @@
 
 @interface KZPropertyMapper (Debug)
 + (void)logIgnoredValues:(BOOL)logIgnoredValues;
-@end
-
-@interface KZPropertyDescriptor : NSObject
-+ (instancetype)descriptorWithPropertyName:(NSString*)name andMapping:(NSString *)mapping;
-- (id)initWithPropertyName:(NSString *)name andMapping:(NSString *)mapping;
-- (void)addValidatonWithBlock:(NSError * (^)(id value, NSString *propertyName))validationBlock;
-- (void)addValidatorWithName:(NSString *)name validation:(BOOL (^)(id value))validator;
 @end

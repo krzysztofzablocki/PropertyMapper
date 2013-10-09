@@ -7,16 +7,7 @@
 #import "KZPropertyMapper.h"
 #import <objc/message.h>
 #import "KZPropertyMapperCommon.h"
-
-
-@interface KZPropertyDescriptor ()
-@property(nonatomic, copy) NSString *propertyName;
-@property(nonatomic, copy) NSString *mapping;
-@property(nonatomic, copy, readonly) NSString *stringMapping;
-@property(nonatomic, strong) NSMutableArray *validationBlocks;
-
-- (NSArray *)validateValue:(id)value;
-@end
+#import "KZPropertyDescriptor.h"
 
 @implementation KZPropertyMapper {
 }
@@ -109,7 +100,6 @@
 
 + (BOOL)mapValue:(id)value toInstance:(id)instance usingStringMapping:(NSString *)mapping
 {
-  NSLog(@"mapping %@", mapping);
   AssertTrueOrReturnNo([mapping isKindOfClass:NSString.class]);
 
   //! normal 1 : 1 mapping
@@ -249,6 +239,20 @@
   return errors;
 }
 
+#pragma mark - Logging configuration
+
+#ifdef KZPropertyMapperLogIgnoredValues
+static BOOL _shouldLogIgnoredValues = KZPropertyMapperLogIgnoredValues;
+#else
+static BOOL _shouldLogIgnoredValues = YES;
+#endif
+
++ (void)logIgnoredValues:(BOOL)logIgnoredValues
+{
+  _shouldLogIgnoredValues = logIgnoredValues;
+}
+
+
 #pragma mark - Dynamic boxing
 
 + (NSURL *)boxValueAsURL:(id)value __unused
@@ -291,80 +295,5 @@
   id (*objc_msgSendTyped)(id, SEL, id) = (void *)objc_msgSend;
   return objc_msgSendTyped(target, selector, value);
 }
-
-#pragma mark - Logging configuration
-
-#ifdef KZPropertyMapperLogIgnoredValues
-static BOOL _shouldLogIgnoredValues = KZPropertyMapperLogIgnoredValues;
-#else
-static BOOL _shouldLogIgnoredValues = YES;
-#endif
-
-+ (void)logIgnoredValues:(BOOL)logIgnoredValues
-{
-  _shouldLogIgnoredValues = logIgnoredValues;
-}
-
 @end
 
-
-@implementation KZPropertyDescriptor
-
-+ (instancetype)descriptorWithPropertyName:(NSString *)name andMapping:(NSString *)mapping
-{
-  return [[KZPropertyDescriptor alloc] initWithPropertyName:name andMapping:mapping];
-}
-
-- (id)initWithPropertyName:(NSString *)name andMapping:(NSString *)mapping
-{
-  self = [super init];
-  if (self) {
-    _propertyName = name;
-    _mapping = mapping;
-  }
-
-  return self;
-}
-
-- (void)addValidatonWithBlock:(NSError * (^)(id, NSString *))validationBlock
-{
-  if (!self.validationBlocks) {
-    self.validationBlocks = [NSMutableArray new];
-  }
-
-  [self.validationBlocks addObject:validationBlock];
-}
-
-- (void)addValidatorWithName:(NSString *)name validation:(BOOL (^)(id value))validator
-{
-  [self addValidatonWithBlock:^(NSString *value, NSString *propertyName) {
-    BOOL validationResult = validator(value);
-    if ([value isKindOfClass:NSNull.class] || !value || !validationResult) {
-      return pixle_NSErrorMake([NSString stringWithFormat:@"%@: validation failed on %@", propertyName, name], kErrorCodeInternal, nil, nil);
-    }
-    return (NSError *)nil;
-  }];
-}
-
-- (NSArray *)validateValue:(id)value
-{
-  NSMutableArray *errors = [NSMutableArray new];
-  [self.validationBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    NSError *(^validationBlock)(id, NSString *) = obj;
-    NSError *error = validationBlock(value, self.propertyName);
-    if (error) {
-      [errors addObject:error];
-    }
-  }];
-  return errors;
-}
-
-- (NSString *)stringMapping
-{
-  if (!self.mapping.length) {
-    return self.propertyName;
-  }
-  return [NSString stringWithFormat:@"@%@(%@)", self.mapping, self.propertyName];
-}
-
-@end

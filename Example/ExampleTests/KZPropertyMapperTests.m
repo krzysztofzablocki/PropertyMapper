@@ -106,6 +106,14 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         it(@"should support boxing functionality", ^{
           [[testObject.videoURL should] beKindOfClass:NSURL.class];
         });
+
+        it(@"should work with selector boxing", ^{
+          TestObject *testObject = [TestObject new];
+          [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:testObject usingMapping:@{
+            @"number" : KZCallT(testObject, numberIncrease:, number)
+          }];
+          [[testObject.number should] equal:@4];
+        });
       });
     });
   });

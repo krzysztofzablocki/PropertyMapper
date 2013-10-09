@@ -9,14 +9,14 @@ SPEC_BEGIN(KZPropertyMapperValidatorSpec)
 
       it(@"isRequired failing if property is missing", ^{
         BOOL result = [KZPropertyMapper mapValuesFrom:@{@"name" : @"Some Cool Video"} toInstance:[TestObject new] usingMapping:@{
-          @"videoURL" : KZMapT([TestObject new], URL, contentURL).isRequired()
+          @"videoURL" : KZBoxT([TestObject new], URL, contentURL).isRequired()
         }];
         [[theValue(result) should] beFalse];
       });
 
       it(@"isRequired succeding if property exists", ^{
         BOOL result = [KZPropertyMapper mapValuesFrom:@{@"videoURL" : @"http://test.com/video.mp4"} toInstance:[TestObject new] usingMapping:@{
-          @"videoURL" : KZMapT([TestObject new], URL, contentURL).isRequired()
+          @"videoURL" : KZBoxT([TestObject new], URL, contentURL).isRequired()
         }];
         [[theValue(result) should] beTrue];
       });
