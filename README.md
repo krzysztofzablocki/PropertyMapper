@@ -79,7 +79,7 @@ Let's now change our mind and decide that we want our type property to be typede
 Done. KVC should also take care of escaping NSNumber into int if your property uses primitive type. Same approach will work for sub-object instances or anything that you can assign to property.
 
 ## Validations
-You can also validate your server data before boxing, mapping it:
+You can also validate your server data before mapping it:
 ````objc
 [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
     @"videoURL" : KZBox(URL, contentURL).isRequired().min(10),
@@ -94,7 +94,7 @@ Validators can be chained together, you can specify as many as you wish for each
 
 If validation fails mapValues will return NO as a result, and you can use expanded method to get list of validation errors.
 
-Any validation errors will prevent whole mapping from happening, as data might be corrupted and we don't want partially updated data.
+Any validation errors will prevent mapping, as data might be corrupted and we don't want partially updated data.
 
 ### Built-in validations
 #### Strings
@@ -112,7 +112,7 @@ Any validation errors will prevent whole mapping from happening, as data might b
 * max
 * range
 
-If you want more you can add validations as category on KZPropertyDescriptor, check sample code to see how it's done, it's extremely simple.
+If you want more you can add validations as categories on KZPropertyDescriptor, check sample code to see how it's done, it's extremely simple.
 
 ### Referencing arrays items
 If your data comes to you in ordered array instead of dictionaries you can reference that as well:
