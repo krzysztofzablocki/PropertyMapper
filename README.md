@@ -24,7 +24,7 @@ Time to implement this changes was sponsored by [The App Business][1].
 
 ## Example usage
 Let's assume you have object like this:
-````
+````objc
 @interface TestObject : NSObject
 @property(nonatomic, strong) NSURL *contentURL;
 @property(nonatomic, strong) NSURL *videoURL;
@@ -36,7 +36,7 @@ Let's assume you have object like this:
 ````
 
 and you receive data from server in this format:
-````
+````objc
 @{
   @"videoURL" : @"http://test.com/video.mp4", 
 	@"name" : @"Some Cool Video", 
@@ -48,7 +48,7 @@ and you receive data from server in this format:
 }
 ````
 this is the code you would write in your parsing code:
-````
+````objc
 [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
    @"videoURL" : KZBox(URL, contentURL),
      @"name" : KZProperty(title),
@@ -63,7 +63,7 @@ Quite obvious what it does but in case you are confused, it will translate video
 
 ## Advanced usage
 Let's now change our mind and decide that we want our type property to be typedef enumeration, it's quite easy with KZPropertyMapper, change type mapping to following and add following method:
-````
+````objc
 @"videoType" : KZCall(videoTypeFromString:, type),
 
 //! implemented on instance you are parsing
@@ -80,7 +80,7 @@ Done. KVC should also take care of escaping NSNumber into int if your property u
 
 ## Validations
 You can also validate your server data before boxing, mapping it:
-````
+````objc
 [KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:@{
     @"videoURL" : KZBox(URL, contentURL).isRequired().min(10),
     @"name" : KZProperty(title).lengthRange(5, 12),
@@ -116,7 +116,7 @@ If you want more you can add validations as category on KZPropertyDescriptor, ch
 
 ### Referencing arrays items
 If your data comes to you in ordered array instead of dictionaries you can reference that as well:
-````
+````objc
 sourceData = @{@"sub_object_array" : @[@"test", @123]}
 
 @{@"sub_object_array" : @{@1 : KZProperty(uniqueID)}
@@ -127,7 +127,7 @@ This will grab first item from sub_object_array and assign it to uniqueID. It al
 
 ### Expanding boxing capabilities
 You can expand boxing capabilities across whole application easily, just add category on KZPropertyMapper that implements methods like this:
-````
+````objc
 + (id)boxValueAsType:(id)value
 {
 	//! your boxing
