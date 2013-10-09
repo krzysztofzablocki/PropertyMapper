@@ -13,7 +13,6 @@
 + (instancetype)descriptorWithPropertyName:(NSString*)name andMapping:(NSString *)mapping;
 + (instancetype)descriptorWithPropertyName:(NSString*)name selector:(SEL)selector;
 
-- (id)initWithPropertyName:(NSString *)name andMapping:(NSString *)mapping;
 - (void)addValidatonWithBlock:(NSError * (^)(id value, NSString *propertyName))validationBlock;
 - (void)addValidatorWithName:(NSString *)name validation:(BOOL (^)(id value))validator;
 

@@ -23,11 +23,11 @@
   };
 }
 
-- (KZPropertyDescriptor * (^)(NSUInteger, NSUInteger))lengthRange
+- (KZPropertyDescriptor * (^)(NSInteger, NSInteger))lengthRange
 {
-  return ^(NSUInteger min, NSUInteger max) {
-    NSUInteger realMax = MAX(min, max);
-    NSUInteger realMin = MIN(min, max);
+  return ^(NSInteger min, NSInteger max) {
+    NSInteger realMax = MAX(min, max);
+    NSInteger realMin = MIN(min, max);
     [self addValidatorWithName:@"lengthRange" validation:^BOOL(NSString *value) {
       return value.length >= realMin && value.length <= realMax;
     }];
@@ -56,9 +56,9 @@
   };
 }
 
-- (KZPropertyDescriptor * (^)(NSUInteger minLength))minLength
+- (KZPropertyDescriptor * (^)(NSInteger minLength))minLength
 {
-  return ^(NSUInteger number) {
+  return ^(NSInteger number) {
     [self addValidatorWithName:@"minLength" validation:^BOOL(NSString *value) {
       return value.length >= number;
     }];
@@ -66,9 +66,9 @@
   };
 }
 
-- (KZPropertyDescriptor * (^)(NSUInteger maxLength))maxLength
+- (KZPropertyDescriptor * (^)(NSInteger maxLength))maxLength
 {
-  return ^(NSUInteger number) {
+  return ^(NSInteger number) {
     [self addValidatorWithName:@"maxLength" validation:^BOOL(NSString *value) {
       return value.length <= number;
     }];
@@ -98,9 +98,9 @@
 
 #pragma mark - Numbers
 
-- (KZPropertyDescriptor * (^)(NSUInteger min))min
+- (KZPropertyDescriptor * (^)(NSInteger min))min
 {
-  return ^(NSUInteger min) {
+  return ^(NSInteger min) {
     [self addValidatorWithName:@"min" validation:^BOOL(NSNumber *value) {
       return value.integerValue >= min;
     }];
@@ -108,9 +108,9 @@
   };
 }
 
-- (KZPropertyDescriptor * (^)(NSUInteger max))max
+- (KZPropertyDescriptor * (^)(NSInteger max))max
 {
-  return ^(NSUInteger maxNumber) {
+  return ^(NSInteger maxNumber) {
     [self addValidatorWithName:@"max" validation:^BOOL(NSNumber *value) {
       BOOL v = value.integerValue <= maxNumber;
       return v;
@@ -119,11 +119,11 @@
   };
 }
 
-- (KZPropertyDescriptor * (^)(NSUInteger, NSUInteger))range
+- (KZPropertyDescriptor * (^)(NSInteger, NSInteger))range
 {
-  return ^(NSUInteger min, NSUInteger max) {
-    NSUInteger realMax = MAX(min, max);
-    NSUInteger realMin = MIN(min, max);
+  return ^(NSInteger min, NSInteger max) {
+    NSInteger realMax = MAX(min, max);
+    NSInteger realMin = MIN(min, max);
     [self addValidatorWithName:@"range" validation:^BOOL(NSNumber *value) {
       return value.integerValue >= realMin && value.integerValue <= realMax;
     }];
