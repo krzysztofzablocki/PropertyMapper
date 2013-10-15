@@ -178,7 +178,7 @@
 {
   AssertTrueOrReturnErrors([mapping isKindOfClass:NSDictionary.class]);
 
-  if ([values isKindOfClass:NSDictionary.class]) {
+  if (!values || [values isKindOfClass:NSDictionary.class]) {
     return [self validateMapping:mapping withValuesDictionary:values];
   } else {
     return [self validateMapping:mapping withValuesArray:values];
