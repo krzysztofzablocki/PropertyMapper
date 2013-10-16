@@ -168,7 +168,7 @@
     objc_msgSend(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
     [instance didChangeValueForKey:mapping];
   } else {
-    [instance setValue:value forKey:mapping];
+    [instance setValue:value forKeyPath:mapping];
   }
 }
 
