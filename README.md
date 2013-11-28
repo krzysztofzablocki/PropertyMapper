@@ -75,7 +75,23 @@ Let's now change our mind and decide that we want our type property to be typede
 
   return @(VideoTypeLong);
 }
-```` 
+````
+
+If you need property name being passed while using selectors, just pass two-argument selector in KZCall. Second argument will be property name passed as NSString. 
+````objc
+@“video” : KZCall(objectFromDictionary:forPropertyName:, type),
+
+//! implemented on instance you are parsing
+- (id)objectFromDictionary:(NSDictionary *)dictionary forPropertyName:(NSString *)propertyName
+{
+  Class objectClass = [self classForProperty:propertyName];
+  id object = [objectClass new];
+  [object updateFromDictionary:dictionary];
+  return object;
+}
+````
+
+ 
 Done. KVC should also take care of escaping NSNumber into int if your property uses primitive type. Same approach will work for sub-object instances or anything that you can assign to property.
 
 ## Validations

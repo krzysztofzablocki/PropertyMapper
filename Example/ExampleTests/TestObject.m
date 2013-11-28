@@ -28,4 +28,9 @@
 - (id)numberIncrease:(NSNumber*)value {
   return @(value.integerValue + 1);
 }
+
+- (id)numberIncrease:(NSNumber*)value forProperty:(NSString *)propertyName {
+  return nil;
+}
+
 @end
