@@ -114,6 +114,15 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           }];
           [[testObject.number should] equal:@4];
         });
+        
+        it(@"should work with two argument selector boxing", ^{
+          TestObject *testObject = [TestObject new];
+          [[testObject should] receive:@selector(numberIncrease:forProperty:) withArguments:@3, @"number"];
+          [KZPropertyMapper mapValuesFrom:@{@"number" : @3} toInstance:testObject usingMapping:@{
+              @"number" : KZCallT(testObject, numberIncrease:forProperty:, number)
+          }];
+        });
+        
       });
     });
   });
