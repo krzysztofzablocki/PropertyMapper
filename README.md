@@ -79,7 +79,7 @@ Let's now change our mind and decide that we want our type property to be typede
 
 If you need property name being passed while using selectors, just pass two-argument selector in KZCall. Second argument will be property name passed as NSString. 
 ````objc
-@“video” : KZCall(objectFromDictionary:forPropertyName:, type),
+@"video" : KZCall(objectFromDictionary:forPropertyName:, type),
 
 //! implemented on instance you are parsing
 - (id)objectFromDictionary:(NSDictionary *)dictionary forPropertyName:(NSString *)propertyName
