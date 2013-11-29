@@ -166,7 +166,7 @@
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass]) {
     [instance willChangeValueForKey:mapping];
-    id (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
+    void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
     objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
     [instance didChangeValueForKey:mapping];
   } else {
