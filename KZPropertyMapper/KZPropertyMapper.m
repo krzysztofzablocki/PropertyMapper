@@ -58,7 +58,7 @@
   [sourceArray enumerateObjectsUsingBlock:^(id value, NSUInteger idx, BOOL *stop) {
     NSNumber *key = @(idx);
     id subMapping = [parameterMapping objectForKey:key];
-    [self mapValue:value toInstance:instance usingMapping:subMapping sourcePropertyName:[NSString stringWithFormat:@"Index %d", key.integerValue]];
+    [self mapValue:value toInstance:instance usingMapping:subMapping sourcePropertyName:[NSString stringWithFormat:@"Index %ld", (long)key.integerValue]];
   }];
   return YES;
 }
