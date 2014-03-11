@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.8'
   s.source_files = 'KZPropertyMapper/*.{h,m}'
   s.requires_arc = true
-  s.frameworks = 'Foundation'
+  s.frameworks = ['Foundation', 'CoreData'];
 end
 
