@@ -8,6 +8,7 @@
 #import <objc/message.h>
 #import "KZPropertyMapperCommon.h"
 #import "KZPropertyDescriptor.h"
+#import <CoreData/CoreData.h>
 
 @implementation KZPropertyMapper {
 }
@@ -164,7 +165,8 @@
 + (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
 {
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
-  if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass]) {
+  if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass] &&
+      [[((NSManagedObject *)instance).entity propertiesByName] valueForKey:mapping]) {
     [instance willChangeValueForKey:mapping];
     void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
     objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
