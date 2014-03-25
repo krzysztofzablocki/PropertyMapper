@@ -17,9 +17,9 @@
   #define KZPropertyT(target, property) ({[KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:nil];})
   #define KZCallT(target, method, property) ({[KZPropertyDescriptor descriptorWithPropertyName:@#property selector:@selector(method)];})
 #else
-  #define KZBoxT(target, mapping, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
-  #define KZPropertyT(target, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:nil];})
-  #define KZCallT(target, method, property) ({[target property], [KZPropertyDescriptor descriptorWithPropertyName:@#property selector:@selector(method)];})
+  #define KZBoxT(target, mapping, property) ({if(NO){[target property];} [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
+  #define KZPropertyT(target, property) ({if(NO){[target property];} [KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:nil];})
+  #define KZCallT(target, method, property) ({if(NO){[target property];} [KZPropertyDescriptor descriptorWithPropertyName:@#property selector:@selector(method)];})
 #endif
 
 @interface KZPropertyMapper : NSObject
