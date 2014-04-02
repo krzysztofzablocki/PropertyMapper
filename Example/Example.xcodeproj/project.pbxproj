@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */; };
+		AD96143018EC5D31005C8E9F /* KZPropertyMapperTypingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD96142F18EC5D31005C8E9F /* KZPropertyMapperTypingTests.m */; };
+		AD96143218EC5D6D005C8E9F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD96143118EC5D6D005C8E9F /* CoreData.framework */; };
 		CDAC630617A0EF1A00F5452A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630517A0EF1A00F5452A /* UIKit.framework */; };
 		CDAC630817A0EF1A00F5452A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630717A0EF1A00F5452A /* Foundation.framework */; };
 		CDAC630A17A0EF1A00F5452A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */; };
@@ -43,6 +45,8 @@
 /* Begin PBXFileReference section */
 		6451F34D9FAB46EBB9653A65 /* Pods-ExampleTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleTests.xcconfig"; path = "Pods/Pods-ExampleTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD96142F18EC5D31005C8E9F /* KZPropertyMapperTypingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperTypingTests.m; sourceTree = "<group>"; };
+		AD96143118EC5D6D005C8E9F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CDAC630217A0EF1A00F5452A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAC630517A0EF1A00F5452A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CDAC630717A0EF1A00F5452A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -89,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD96143218EC5D6D005C8E9F /* CoreData.framework in Frameworks */,
 				CDAC632417A0EF1A00F5452A /* SenTestingKit.framework in Frameworks */,
 				CDAC632517A0EF1A00F5452A /* UIKit.framework in Frameworks */,
 				CDAC632617A0EF1A00F5452A /* Foundation.framework in Frameworks */,
@@ -123,6 +128,7 @@
 		CDAC630417A0EF1A00F5452A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AD96143118EC5D6D005C8E9F /* CoreData.framework */,
 				CDAC630517A0EF1A00F5452A /* UIKit.framework */,
 				CDAC630717A0EF1A00F5452A /* Foundation.framework */,
 				CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */,
@@ -162,6 +168,7 @@
 				CDAC632A17A0EF1A00F5452A /* Supporting Files */,
 				CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */,
 				E291DAA946FDB826F280B414 /* KZPropertyMapperValidatorTests.m */,
+				AD96142F18EC5D31005C8E9F /* KZPropertyMapperTypingTests.m */,
 				E291D986A7D1F8BBF92531C8 /* TestObject.m */,
 				E291D810AA170B1037E11AB8 /* TestObject.h */,
 			);
@@ -346,6 +353,7 @@
 				CDAC634017A0EF4C00F5452A /* KZPropertyMapper.m in Sources */,
 				E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */,
 				E291D7BAF83116A7AB826E9C /* KZPropertyMapperValidatorTests.m in Sources */,
+				AD96143018EC5D31005C8E9F /* KZPropertyMapperTypingTests.m in Sources */,
 				E291D408E9E6348D9FD7F6E5 /* TestObject.m in Sources */,
 				E291DBB3132B563C05EB86DE /* KZPropertyDescriptor.m in Sources */,
 			);
