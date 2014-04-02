@@ -164,6 +164,10 @@
 
 + (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
 {
+  if (![self mapping:mapping forInstance:instance matchesTypeOfObject:value]) {
+    return;
+  }
+  
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass] &&
       [[((NSManagedObject *)instance).entity propertiesByName] valueForKey:mapping]) {
@@ -174,6 +178,31 @@
   } else {
     [instance setValue:value forKeyPath:mapping];
   }
+}
+
++ (BOOL)mapping:(NSString *)mapping forInstance:(id)instance matchesTypeOfObject:(id)object
+{
+  objc_property_t theProperty = class_getProperty([instance class], [mapping UTF8String]);
+  if (!theProperty) {
+    return YES; // This keeps default behaviour of KZPropertyMapper
+  }
+  
+  NSString *propertyEncoding = [NSString stringWithUTF8String:property_getAttributes(theProperty)];
+  NSArray *encodings = [propertyEncoding componentsSeparatedByString:@","];
+  NSString *fullTypeEncoding = [encodings firstObject];
+  NSString *typeEncoding = [fullTypeEncoding substringFromIndex:1];
+  const char *cTypeEncoding = [typeEncoding substringToIndex:1].UTF8String;
+  
+  if (strcmp(cTypeEncoding, @encode(id)) != 0) {
+    return YES; // This keeps default behaviour of KZPropertyMapper
+  }
+  
+  if (typeEncoding.length < 3) {
+    return YES; // Looks like it is "id" so, should be fine
+  }
+  NSString *className = [typeEncoding substringWithRange:NSMakeRange(2, typeEncoding.length - 3)];
+  Class propertyClass = NSClassFromString(className);
+  return ([object isKindOfClass:propertyClass]);
 }
 
 #pragma mark - Validation
@@ -192,11 +221,21 @@
 + (NSArray *)validateMapping:(NSDictionary *)mapping withValuesArray:(NSArray *)values
 {
   NSMutableArray *errors = [NSMutableArray new];
+  
+  if (![values isKindOfClass:NSArray.class]) {
+    return errors;
+  }
+  
   [mapping enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
     AssertTrueOrReturn([key isKindOfClass:NSNumber.class]);
-
-    id value = [values objectAtIndex:key.unsignedIntValue];
-
+    
+    NSUInteger itemIndex = key.unsignedIntValue;
+    if (itemIndex >= values.count) {
+      return;
+    }
+    
+    id value = [values objectAtIndex:itemIndex];
+    
     //! submapping
     if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
       NSArray *validationErrors = [self validateMapping:obj withValues:value];

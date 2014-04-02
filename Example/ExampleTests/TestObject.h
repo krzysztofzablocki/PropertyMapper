@@ -13,7 +13,7 @@
 @property(nonatomic, strong) NSURL *videoURL;
 @property(nonatomic, strong) id type;
 @property(nonatomic, strong) NSString *title;
-@property(nonatomic, strong) NSString *uniqueID;
+@property(nonatomic, strong) NSNumber *uniqueID;
 @property(nonatomic, strong) NSNumber *number;
 
 - (BOOL)updateFromDictionary:(NSDictionary *)dictionary;
