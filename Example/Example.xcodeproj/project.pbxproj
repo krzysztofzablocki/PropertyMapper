@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */; };
+		AD85096F18ED7741005DAC7A /* KZPropertyMapperTypingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD85096E18ED7741005DAC7A /* KZPropertyMapperTypingTests.m */; };
+		AD85099A18ED8353005DAC7A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD85099918ED8353005DAC7A /* CoreData.framework */; };
+		AD85099D18ED868D005DAC7A /* TestManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AD85099C18ED868D005DAC7A /* TestManagedObject.m */; };
 		CDAC630617A0EF1A00F5452A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630517A0EF1A00F5452A /* UIKit.framework */; };
 		CDAC630817A0EF1A00F5452A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630717A0EF1A00F5452A /* Foundation.framework */; };
 		CDAC630A17A0EF1A00F5452A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */; };
@@ -43,6 +46,11 @@
 /* Begin PBXFileReference section */
 		6451F34D9FAB46EBB9653A65 /* Pods-ExampleTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleTests.xcconfig"; path = "Pods/Pods-ExampleTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD85096E18ED7741005DAC7A /* KZPropertyMapperTypingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperTypingTests.m; sourceTree = "<group>"; };
+		AD85099918ED8353005DAC7A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		AD85099B18ED868D005DAC7A /* TestManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestManagedObject.h; sourceTree = "<group>"; };
+		AD85099C18ED868D005DAC7A /* TestManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestManagedObject.m; sourceTree = "<group>"; };
+		AD85099E18ED86ED005DAC7A /* TestObjectProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestObjectProtocol.h; sourceTree = "<group>"; };
 		CDAC630217A0EF1A00F5452A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAC630517A0EF1A00F5452A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CDAC630717A0EF1A00F5452A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -89,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD85099A18ED8353005DAC7A /* CoreData.framework in Frameworks */,
 				CDAC632417A0EF1A00F5452A /* SenTestingKit.framework in Frameworks */,
 				CDAC632517A0EF1A00F5452A /* UIKit.framework in Frameworks */,
 				CDAC632617A0EF1A00F5452A /* Foundation.framework in Frameworks */,
@@ -123,6 +132,7 @@
 		CDAC630417A0EF1A00F5452A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AD85099918ED8353005DAC7A /* CoreData.framework */,
 				CDAC630517A0EF1A00F5452A /* UIKit.framework */,
 				CDAC630717A0EF1A00F5452A /* Foundation.framework */,
 				CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */,
@@ -161,9 +171,13 @@
 			children = (
 				CDAC632A17A0EF1A00F5452A /* Supporting Files */,
 				CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */,
+				AD85096E18ED7741005DAC7A /* KZPropertyMapperTypingTests.m */,
 				E291DAA946FDB826F280B414 /* KZPropertyMapperValidatorTests.m */,
-				E291D986A7D1F8BBF92531C8 /* TestObject.m */,
+				AD85099E18ED86ED005DAC7A /* TestObjectProtocol.h */,
 				E291D810AA170B1037E11AB8 /* TestObject.h */,
+				E291D986A7D1F8BBF92531C8 /* TestObject.m */,
+				AD85099B18ED868D005DAC7A /* TestManagedObject.h */,
+				AD85099C18ED868D005DAC7A /* TestManagedObject.m */,
 			);
 			path = ExampleTests;
 			sourceTree = "<group>";
@@ -344,8 +358,10 @@
 			files = (
 				CDAC633C17A0EF4000F5452A /* KZPropertyMapperTests.m in Sources */,
 				CDAC634017A0EF4C00F5452A /* KZPropertyMapper.m in Sources */,
+				AD85099D18ED868D005DAC7A /* TestManagedObject.m in Sources */,
 				E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */,
 				E291D7BAF83116A7AB826E9C /* KZPropertyMapperValidatorTests.m in Sources */,
+				AD85096F18ED7741005DAC7A /* KZPropertyMapperTypingTests.m in Sources */,
 				E291D408E9E6348D9FD7F6E5 /* TestObject.m in Sources */,
 				E291DBB3132B563C05EB86DE /* KZPropertyDescriptor.m in Sources */,
 			);
