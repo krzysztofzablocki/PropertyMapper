@@ -184,19 +184,33 @@
 
   if (!values || [values isKindOfClass:NSDictionary.class]) {
     return [self validateMapping:mapping withValuesDictionary:values];
-  } else {
+  } else if ([values isKindOfClass:NSArray.class]) {
     return [self validateMapping:mapping withValuesArray:values];
   }
+  if (_shouldLogIgnoredValues) {
+    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", mapping);
+  }
+  return nil;
 }
 
 + (NSArray *)validateMapping:(NSDictionary *)mapping withValuesArray:(NSArray *)values
 {
+  AssertTrueOrReturnNil([values isKindOfClass:NSArray.class]);
+  
   NSMutableArray *errors = [NSMutableArray new];
   [mapping enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
     AssertTrueOrReturn([key isKindOfClass:NSNumber.class]);
-
-    id value = [values objectAtIndex:key.unsignedIntValue];
-
+    
+    NSUInteger itemIndex = key.unsignedIntValue;
+    if (itemIndex >= values.count) {
+      if (_shouldLogIgnoredValues) {
+        NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", key);
+      }
+      return;
+    }
+    
+    id value = [values objectAtIndex:itemIndex];
+    
     //! submapping
     if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
       NSArray *validationErrors = [self validateMapping:obj withValues:value];
@@ -222,7 +236,10 @@
   NSMutableArray *errors = [NSMutableArray new];
   [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
     id value = [values objectForKey:key];
-
+    if ([value isKindOfClass:NSNull.class]) {
+      value = nil;
+    }
+    
     //! submapping
     if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
       NSArray *validationErrors = [self validateMapping:obj withValues:value];
