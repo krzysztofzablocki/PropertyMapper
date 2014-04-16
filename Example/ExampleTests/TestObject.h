@@ -21,4 +21,6 @@
 @property(nonatomic, assign) BOOL isExpensive;
 
 - (BOOL)updateFromDictionary:(NSDictionary *)dictionary;
+- (id)passthroughMethod:(id)object;
+
 @end
