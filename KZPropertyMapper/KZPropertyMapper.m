@@ -6,9 +6,9 @@
 
 #import "KZPropertyMapper.h"
 #import <objc/message.h>
-#import "KZPropertyMapperCommon.h"
-#import "KZPropertyDescriptor.h"
 #import <CoreData/CoreData.h>
+#import "KZPropertyDescriptor.h"
+#import "KZPropertyMapperCommon.h"
 
 @implementation KZPropertyMapper {
 }
@@ -103,12 +103,29 @@
 {
   AssertTrueOrReturnNo([mapping isKindOfClass:NSString.class]);
 
-  //! normal 1 : 1 mapping
-  if (![mapping hasPrefix:@"@"]) {
+  BOOL isBoxedMapping = [mapping hasPrefix:@"@"];
+  BOOL isListOfMappings = [mapping rangeOfString:@"&"].location != NSNotFound;
+  
+  if (!isBoxedMapping && !isListOfMappings) {
+    //! normal 1 : 1 mapping
     [self setValue:value withMapping:mapping onInstance:instance];
     return YES;
   }
 
+  if (isListOfMappings) {
+    //! List of mappings
+    NSArray *stringMappings = [mapping componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"&"]];
+    for (NSString *innerMapping in stringMappings) {
+      NSString *wipedInnerMapping = [innerMapping stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      BOOL parse = [self mapValue:value toInstance:instance usingStringMapping:wipedInnerMapping];
+      if (!parse) {
+        return NO;
+      }
+    }
+    return YES;
+  }
+
+  //! Single boxing
   NSArray *components = [mapping componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"@()"]];
   AssertTrueOrReturnNo(components.count == 4);
 
@@ -164,6 +181,10 @@
 
 + (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
 {
+  if (![self mapping:mapping forInstance:instance matchesTypeOfObject:value]) {
+    return;
+  }
+  
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass] &&
       [[((NSManagedObject *)instance).entity propertiesByName] valueForKey:mapping]) {
@@ -176,6 +197,37 @@
   }
 }
 
++ (BOOL)mapping:(NSString *)mapping forInstance:(id)instance matchesTypeOfObject:(id)object
+{
+  objc_property_t theProperty = class_getProperty([instance class], [mapping UTF8String]);
+  if (!theProperty) {
+    return YES; // This keeps default behaviour of KZPropertyMapper
+  }
+  
+  NSString *propertyEncoding = [NSString stringWithUTF8String:property_getAttributes(theProperty)];
+  NSArray *encodings = [propertyEncoding componentsSeparatedByString:@","];
+  NSString *fullTypeEncoding = [encodings firstObject];
+  NSString *typeEncoding = [fullTypeEncoding substringFromIndex:1];
+  const char *cTypeEncoding = [typeEncoding substringToIndex:1].UTF8String;
+  
+  if (strcmp(cTypeEncoding, @encode(id)) != 0) {
+    return YES; // This keeps default behaviour of KZPropertyMapper
+  }
+  
+  if ([typeEncoding isEqual:@"@"] || typeEncoding.length < 3) {
+    return YES; // Looks like it is "id" so, should be fine
+  }
+  
+  NSString *className = [typeEncoding substringWithRange:NSMakeRange(2, typeEncoding.length - 3)];
+  Class propertyClass = NSClassFromString(className);
+  BOOL isSameTypeObject = ([object isKindOfClass:propertyClass]);
+  
+  if (_shouldLogIgnoredValues && !isSameTypeObject) {
+    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", mapping);
+  }
+  return isSameTypeObject;
+}
+
 #pragma mark - Validation
 
 + (NSArray *)validateMapping:(NSDictionary *)mapping withValues:(id)values
@@ -184,19 +236,33 @@
 
   if (!values || [values isKindOfClass:NSDictionary.class]) {
     return [self validateMapping:mapping withValuesDictionary:values];
-  } else {
+  } else if ([values isKindOfClass:NSArray.class]) {
     return [self validateMapping:mapping withValuesArray:values];
   }
+  if (_shouldLogIgnoredValues) {
+    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", mapping);
+  }
+  return nil;
 }
 
 + (NSArray *)validateMapping:(NSDictionary *)mapping withValuesArray:(NSArray *)values
 {
+  AssertTrueOrReturnNil([values isKindOfClass:NSArray.class]);
+  
   NSMutableArray *errors = [NSMutableArray new];
   [mapping enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
     AssertTrueOrReturn([key isKindOfClass:NSNumber.class]);
-
-    id value = [values objectAtIndex:key.unsignedIntValue];
-
+    
+    NSUInteger itemIndex = key.unsignedIntValue;
+    if (itemIndex >= values.count) {
+      if (_shouldLogIgnoredValues) {
+        NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", key);
+      }
+      return;
+    }
+    
+    id value = [values objectAtIndex:itemIndex];
+    
     //! submapping
     if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
       NSArray *validationErrors = [self validateMapping:obj withValues:value];
@@ -222,7 +288,10 @@
   NSMutableArray *errors = [NSMutableArray new];
   [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
     id value = [values objectForKey:key];
-
+    if ([value isKindOfClass:NSNull.class]) {
+      value = nil;
+    }
+    
     //! submapping
     if ([obj isKindOfClass:NSArray.class] || [obj isKindOfClass:NSDictionary.class]) {
       NSArray *validationErrors = [self validateMapping:obj withValues:value];

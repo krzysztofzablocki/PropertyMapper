@@ -1,14 +1,14 @@
 //
-//  Created by merowing on 08/10/2013.
+//  TestObjectProtocol.h
+//  Example
 //
+//  Created by Marek Cirkos on 03/04/2014.
+//  Copyright (c) 2014 pixle. All rights reserved.
 //
-//
-
 
 #import <Foundation/Foundation.h>
-#import "TestObjectProtocol.h"
 
-@interface TestObject : NSObject <TestObjectProtocol>
+@protocol TestObjectProtocol <NSObject>
 @property(nonatomic, strong) NSURL *contentURL;
 @property(nonatomic, strong) NSURL *videoURL;
 @property(nonatomic, strong) id type;
@@ -19,8 +19,5 @@
 @property(nonatomic, assign) float floatNumber;
 @property(nonatomic, assign) BOOL isCheap;
 @property(nonatomic, assign) BOOL isExpensive;
-
-- (BOOL)updateFromDictionary:(NSDictionary *)dictionary;
-- (id)passthroughMethod:(id)object;
 
 @end
