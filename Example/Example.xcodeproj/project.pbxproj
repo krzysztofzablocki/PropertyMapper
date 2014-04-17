@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */; };
+		AD1072A8190013F90059B566 /* KZPropertyMapperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */; };
 		CDAC630617A0EF1A00F5452A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630517A0EF1A00F5452A /* UIKit.framework */; };
 		CDAC630817A0EF1A00F5452A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630717A0EF1A00F5452A /* Foundation.framework */; };
 		CDAC630A17A0EF1A00F5452A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */; };
@@ -348,6 +349,7 @@
 				E291D7BAF83116A7AB826E9C /* KZPropertyMapperValidatorTests.m in Sources */,
 				E291D408E9E6348D9FD7F6E5 /* TestObject.m in Sources */,
 				E291DBB3132B563C05EB86DE /* KZPropertyDescriptor.m in Sources */,
+				AD1072A8190013F90059B566 /* KZPropertyMapperCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
