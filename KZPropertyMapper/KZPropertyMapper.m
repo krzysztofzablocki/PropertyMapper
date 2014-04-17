@@ -103,12 +103,27 @@
 {
   AssertTrueOrReturnNo([mapping isKindOfClass:NSString.class]);
 
-  //! normal 1 : 1 mapping
-  if (![mapping hasPrefix:@"@"]) {
+  BOOL isBoxedMapping = [mapping hasPrefix:@"@"];
+  BOOL isListOfMappings = [mapping rangeOfString:@"&"].location != NSNotFound;
+  
+  if (!isBoxedMapping && !isListOfMappings) {
+    //! normal 1 : 1 mapping
     [self setValue:value withMapping:mapping onInstance:instance];
     return YES;
   }
 
+  if (isListOfMappings) {
+    //! List of mappings
+    BOOL parseResult = YES;
+    NSArray *stringMappings = [mapping componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"&"]];
+    for (NSString *innerMapping in stringMappings) {
+      NSString *wipedInnerMapping = [innerMapping stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      parseResult = [self mapValue:value toInstance:instance usingStringMapping:wipedInnerMapping] && parseResult;
+    }
+    return parseResult;
+  }
+
+  //! Single boxing
   NSArray *components = [mapping componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"@()"]];
   AssertTrueOrReturnNo(components.count == 4);
 

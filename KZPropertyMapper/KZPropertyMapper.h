@@ -11,6 +11,7 @@
 #define KZBox(mapping, property) KZBoxT(self, mapping, property)
 #define KZProperty(property) KZPropertyT(self, property)
 #define KZCall(method, property) KZCallT(self, method, property)
+#define KZList(...) [KZPropertyDescriptor descriptorWithPropertyName:nil andMappings:__VA_ARGS__, nil]
 
 #ifdef KZPropertyMapperDisableCompileTimeChecking
   #define KZBoxT(target, mapping, property) ({[KZPropertyDescriptor descriptorWithPropertyName:@#property andMapping:@#mapping];})
