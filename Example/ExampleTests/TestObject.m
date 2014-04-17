@@ -33,4 +33,9 @@
   return nil;
 }
 
+- (id)passthroughMethod:(id)object
+{
+  return object;
+}
+
 @end

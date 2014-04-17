@@ -17,4 +17,6 @@
 @property(nonatomic, strong) NSNumber *number;
 
 - (BOOL)updateFromDictionary:(NSDictionary *)dictionary;
+- (id)passthroughMethod:(id)object;
+
 @end
