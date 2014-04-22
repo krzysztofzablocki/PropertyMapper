@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */; };
 		AD1072A8190013F90059B566 /* KZPropertyMapperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = E291D1C8206D915E89EBED4C /* KZPropertyMapperCommon.m */; };
+		CD0508D119067DC60023C2FF /* KZPropertyMapperListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD0508D019067DC60023C2FF /* KZPropertyMapperListTests.m */; };
 		CDAC630617A0EF1A00F5452A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630517A0EF1A00F5452A /* UIKit.framework */; };
 		CDAC630817A0EF1A00F5452A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630717A0EF1A00F5452A /* Foundation.framework */; };
 		CDAC630A17A0EF1A00F5452A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */; };
@@ -44,6 +45,7 @@
 /* Begin PBXFileReference section */
 		6451F34D9FAB46EBB9653A65 /* Pods-ExampleTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleTests.xcconfig"; path = "Pods/Pods-ExampleTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD0508D019067DC60023C2FF /* KZPropertyMapperListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperListTests.m; sourceTree = "<group>"; };
 		CDAC630217A0EF1A00F5452A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAC630517A0EF1A00F5452A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CDAC630717A0EF1A00F5452A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -160,6 +162,7 @@
 		CDAC632917A0EF1A00F5452A /* ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				CD0508D019067DC60023C2FF /* KZPropertyMapperListTests.m */,
 				CDAC632A17A0EF1A00F5452A /* Supporting Files */,
 				CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */,
 				E291DAA946FDB826F280B414 /* KZPropertyMapperValidatorTests.m */,
@@ -347,6 +350,7 @@
 				CDAC634017A0EF4C00F5452A /* KZPropertyMapper.m in Sources */,
 				E291DE6931A5A72B61BBCF14 /* KZPropertyDescriptor+Validators.m in Sources */,
 				E291D7BAF83116A7AB826E9C /* KZPropertyMapperValidatorTests.m in Sources */,
+				CD0508D119067DC60023C2FF /* KZPropertyMapperListTests.m in Sources */,
 				E291D408E9E6348D9FD7F6E5 /* TestObject.m in Sources */,
 				E291DBB3132B563C05EB86DE /* KZPropertyDescriptor.m in Sources */,
 				AD1072A8190013F90059B566 /* KZPropertyMapperCommon.m in Sources */,

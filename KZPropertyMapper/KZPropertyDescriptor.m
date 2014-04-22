@@ -24,6 +24,40 @@
   return [[KZPropertyDescriptor alloc] initWithPropertyName:name andMapping:mapping];
 }
 
++ (instancetype)descriptorWithPropertyName:(NSString*)name andMappings:(id)mapping, ...
+{
+  if (mapping == nil) {
+    return nil;
+  }
+ 
+  NSMutableString *mappingString = [NSMutableString new];
+  [self addMapping:mapping toMappingString:mappingString];
+  va_list args;
+  va_start(args, mapping);
+  
+  while(mapping) {
+    [self addMapping:mapping toMappingString:mappingString];
+    mapping = va_arg(args, id);
+  }
+  va_end(args);
+
+  return [KZPropertyDescriptor descriptorWithPropertyName:name andMapping:mappingString.copy];
+}
+
++ (void)addMapping:(id)mapping toMappingString:(NSMutableString *)mappingString
+{
+  NSString *prefix = (mappingString.length ? @" & " : @"");
+  if ([mapping isKindOfClass:NSString.class]) {
+    [mappingString appendFormat:@"%@%@", prefix, mapping];
+    return;
+  }
+  
+  if ([mapping isKindOfClass:KZPropertyDescriptor.class]) {
+    [mappingString appendFormat:@"%@%@", prefix, [mapping stringMapping]];
+    return;
+  }
+}
+
 + (instancetype)descriptorWithPropertyName:(NSString*)name selector:(SEL)selector
 {
   KZPropertyDescriptor *descriptor = [[KZPropertyDescriptor alloc] initWithPropertyName:name andMapping:NSStringFromSelector(selector)];
@@ -79,6 +113,10 @@
 {
   if (!self.mapping.length) {
     return self.propertyName;
+  }
+  
+  if (!self.propertyName.length) {
+    return self.mapping;
   }
   
   if (self.isUsingSelectorMapping) {
