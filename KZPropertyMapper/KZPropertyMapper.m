@@ -179,6 +179,10 @@
 
 + (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
 {
+  if (![self mapping:mapping forInstance:instance matchesTypeOfObject:value]) {
+    return;
+  }
+  
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass] &&
       [[((NSManagedObject *)instance).entity propertiesByName] valueForKey:mapping]) {
@@ -189,6 +193,37 @@
   } else {
     [instance setValue:value forKeyPath:mapping];
   }
+}
+
++ (BOOL)mapping:(NSString *)mapping forInstance:(id)instance matchesTypeOfObject:(id)object
+{
+  objc_property_t theProperty = class_getProperty([instance class], [mapping UTF8String]);
+  if (!theProperty) {
+    return YES; // This keeps default behaviour of KZPropertyMapper
+  }
+  
+  NSString *propertyEncoding = [NSString stringWithUTF8String:property_getAttributes(theProperty)];
+  NSArray *encodings = [propertyEncoding componentsSeparatedByString:@","];
+  NSString *fullTypeEncoding = [encodings firstObject];
+  NSString *typeEncoding = [fullTypeEncoding substringFromIndex:1];
+  const char *cTypeEncoding = [typeEncoding substringToIndex:1].UTF8String;
+  
+  if (strcmp(cTypeEncoding, @encode(id)) != 0) {
+    return YES; // This keeps default behaviour of KZPropertyMapper
+  }
+  
+  if ([typeEncoding isEqual:@"@"] || typeEncoding.length < 3) {
+    return YES; // Looks like it is "id" so, should be fine
+  }
+  
+  NSString *className = [typeEncoding substringWithRange:NSMakeRange(2, typeEncoding.length - 3)];
+  Class propertyClass = NSClassFromString(className);
+  BOOL isSameTypeObject = ([object isKindOfClass:propertyClass]);
+  
+  if (_shouldLogIgnoredValues && !isSameTypeObject) {
+    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", mapping);
+  }
+  return isSameTypeObject;
 }
 
 #pragma mark - Validation
