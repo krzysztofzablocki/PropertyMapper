@@ -16,6 +16,24 @@ I don't like passing around JSON so I write parsing on top of native objects lik
 If you get data as JSON just write a simple category that transforms JSON to native objects using NSJSONSerialization.
 
 
+## What's new in 2.5.0?
+
+* Added KZList that allows you to map single source property into multiple target ones.
+* Added type checking while parsing, if mismatched type is found a property will be ignored and a warning will be generated.  
+* Fixed few minor bugs when working with unexpected server responses.
+
+````objc
+@{
+  	@"videoURL" : KZList(
+				KZBoxT(object, URL, contentURL),
+				KZPropertyT(object, uniqueID),
+				KZCallT(object, passthroughMethod:, type)
+			)
+}
+````
+
+Contributed by [Marek Cirkos][3]
+
 ## What's new in 2.0?
 * New property syntax (old one still works) that allows you to get  compile errors when you misspell property names.
 * Introduced concept of validators, chain-able.
@@ -162,4 +180,5 @@ Unit tests should serve as documentation. Default boxing types include @URL and 
 
  [1]: http://theappbusiness.com
  [2]: http://foldifyapp.com
+ [3]: https://github.com/marekcirkos
  [7]: http://twitter.com/merowing_
