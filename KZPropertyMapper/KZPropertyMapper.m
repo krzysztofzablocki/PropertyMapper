@@ -86,20 +86,20 @@
     return;
   }
 
-  [self mapValue:value toInstance:instance usingMapping:mapping];
+  [self mapValue:value toInstance:instance usingMapping:mapping sourceKey:propertyName];
 }
 
-+ (BOOL)mapValue:(id)value toInstance:(id)instance usingMapping:(id)mapping
++ (BOOL)mapValue:(id)value toInstance:(id)instance usingMapping:(id)mapping sourceKey:(NSString *)sourceKey
 {
   if ([mapping isKindOfClass:KZPropertyDescriptor.class]) {
-    return [self mapValue:value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)mapping];
+    return [self mapValue:value toInstance:instance usingDescriptor:(KZPropertyDescriptor *)mapping sourceKey:sourceKey];
   }
 
-  return [self mapValue:value toInstance:instance usingStringMapping:mapping];
+  return [self mapValue:value toInstance:instance usingStringMapping:mapping sourceKey:sourceKey];
 
 }
 
-+ (BOOL)mapValue:(id)value toInstance:(id)instance usingStringMapping:(NSString *)mapping
++ (BOOL)mapValue:(id)value toInstance:(id)instance usingStringMapping:(NSString *)mapping sourceKey:(NSString *)sourceKey
 {
   AssertTrueOrReturnNo([mapping isKindOfClass:NSString.class]);
 
@@ -108,7 +108,7 @@
   
   if (!isBoxedMapping && !isListOfMappings) {
     //! normal 1 : 1 mapping
-    [self setValue:value withMapping:mapping onInstance:instance];
+    [self setValue:value onInstance:instance usingKeyPath:mapping sourceKey:sourceKey];
     return YES;
   }
 
@@ -118,7 +118,7 @@
     NSArray *stringMappings = [mapping componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"&"]];
     for (NSString *innerMapping in stringMappings) {
       NSString *wipedInnerMapping = [innerMapping stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-      parseResult = [self mapValue:value toInstance:instance usingStringMapping:wipedInnerMapping] && parseResult;
+      parseResult = [self mapValue:value toInstance:instance usingStringMapping:wipedInnerMapping sourceKey:sourceKey] && parseResult;
     }
     return parseResult;
   }
@@ -162,40 +162,42 @@
   if (!boxedValue) {
     return NO;
   }
-  [self setValue:boxedValue withMapping:targetProperty onInstance:instance];
+  [self setValue:boxedValue onInstance:instance usingKeyPath:targetProperty sourceKey:sourceKey];
   return YES;
 }
 
-+ (BOOL)mapValue:(id)value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)descriptor
++ (BOOL)mapValue:(id)value toInstance:(id)instance usingDescriptor:(KZPropertyDescriptor *)descriptor sourceKey:(NSString *)sourceKey
 {
   NSArray *errors = [descriptor validateValue:value];
   if (errors.count > 0) {
     return NO;
   }
 
-  [self mapValue:value toInstance:instance usingStringMapping:descriptor.stringMapping];
+  [self mapValue:value toInstance:instance usingStringMapping:descriptor.stringMapping sourceKey:sourceKey];
   return YES;
 }
 
-+ (void)setValue:(id)value withMapping:(NSString *)mapping onInstance:(id)instance
++ (void)setValue:(id)value onInstance:(id)instance usingKeyPath:(NSString *)targetKeyPath sourceKey:(NSString *)sourceKey
 {
-  if (![self mapping:mapping forInstance:instance matchesTypeOfObject:value]) {
+  if (![self validateMapping:targetKeyPath withMappingValue:value onInstance:instance sourceKey:sourceKey]) {
     return;
   }
   
   Class coreDataBaseClass = NSClassFromString(@"NSManagedObject");
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass] &&
-      [[((NSManagedObject *)instance).entity propertiesByName] valueForKey:mapping]) {
-    [instance willChangeValueForKey:mapping];
+          [[((NSManagedObject *) instance).entity propertiesByName] valueForKey:targetKeyPath]) {
+    [instance willChangeValueForKey:targetKeyPath];
     void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
-    objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
-    [instance didChangeValueForKey:mapping];
+    objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, targetKeyPath);
+    [instance didChangeValueForKey:targetKeyPath];
   } else {
-    [instance setValue:value forKeyPath:mapping];
+    [instance setValue:value forKeyPath:targetKeyPath];
   }
 }
 
-+ (BOOL)mapping:(NSString *)mapping forInstance:(id)instance matchesTypeOfObject:(id)object
+#pragma mark - Validation
+
++ (BOOL)validateMapping:(NSString *)mapping withMappingValue:(id)object onInstance:(id)instance sourceKey:(NSString *)sourceKey
 {
   objc_property_t theProperty = class_getProperty([instance class], [mapping UTF8String]);
   if (!theProperty) {
@@ -216,17 +218,15 @@
     return YES; // Looks like it is "id" so, should be fine
   }
   
-  NSString *className = [typeEncoding substringWithRange:NSMakeRange(2, typeEncoding.length - 3)];
-  Class propertyClass = NSClassFromString(className);
+  NSString *propertyClassName = [typeEncoding substringWithRange:NSMakeRange(2, typeEncoding.length - 3)];
+  Class propertyClass = NSClassFromString(propertyClassName);
   BOOL isSameTypeObject = ([object isKindOfClass:propertyClass]);
   
   if (_shouldLogIgnoredValues && !isSameTypeObject) {
-    NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", mapping);
+    NSLog(@"KZPropertyMapper: Ignoring mapping from %@ to %@ because type %@ does NOT match %@", sourceKey, mapping, NSStringFromClass([object class]), propertyClassName);
   }
   return isSameTypeObject;
 }
-
-#pragma mark - Validation
 
 + (NSArray *)validateMapping:(NSDictionary *)mapping withValues:(id)values
 {
