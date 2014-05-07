@@ -26,24 +26,19 @@ describe(@"KZList", ^{
     });
     
     it(@"should parse when using string mapping", ^{
-      mapping = @{@"Content": @"title & uniqueID"};
+      mapping = @{@"Content": @"title & subtitle"};
       
       [KZPropertyMapper mapValuesFrom:parsingSource toInstance:object usingMapping:mapping];;
-      [[object.title shouldNot] beNil];
       [[object.title should] equal:compareValue];
-      [[object.uniqueID shouldNot] beNil];
-      [[object.uniqueID should] equal:compareValue];
-      [[object.contentURL should] beNil];
+      [[object.subtitle should] equal:compareValue];
     });
     
     it(@"should parse when using KZPropertyDescriptor", ^{
-      mapping = @{@"Content": [KZPropertyDescriptor descriptorWithPropertyName:nil andMappings:@"title", @"uniqueID", nil]};
+      mapping = @{@"Content": [KZPropertyDescriptor descriptorWithPropertyName:nil andMappings:@"title", @"subtitle", nil]};
 
       [KZPropertyMapper mapValuesFrom:parsingSource toInstance:object usingMapping:mapping];
-      [[object.title shouldNot] beNil];
       [[object.title should] equal:compareValue];
-      [[object.uniqueID shouldNot] beNil];
-      [[object.uniqueID should] equal:compareValue];
+      [[object.subtitle should] equal:compareValue];
       [[object.contentURL should] beNil];
     });
     
@@ -51,7 +46,7 @@ describe(@"KZList", ^{
       beforeAll(^{
         mapping = @{@"Content": KZList(@"title",
                                        KZBoxT(object, URL, contentURL),
-                                       KZPropertyT(object, uniqueID),
+                                       KZPropertyT(object, subtitle),
                                        KZCallT(object, passthroughMethod:, type))
                     };
       });
@@ -61,22 +56,18 @@ describe(@"KZList", ^{
       });
       
       it(@"should work with string maping", ^{
-        [[object.title shouldNot] beNil];
         [[object.title should] equal:compareValue];
       });
       
       it(@"should wotk with KZPropertyT macro", ^{
-        [[object.uniqueID shouldNot] beNil];
-        [[object.uniqueID should] equal:compareValue];
+        [[object.subtitle should] equal:compareValue];
       });
       
       it(@"should wotk with KZCallT macro", ^{
-        [[object.type shouldNot] beNil];
         [[object.type should] equal:compareValue];
       });
       
       it(@"should wotk with KZBoxT macro", ^{
-        [[object.contentURL shouldNot] beNil];
         [[object.contentURL should] equal:[NSURL URLWithString:compareValue]];
       });
     });

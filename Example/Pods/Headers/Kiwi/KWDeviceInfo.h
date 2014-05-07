@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWDeviceInfo.h
+../../Kiwi/Classes/Core/KWDeviceInfo.h

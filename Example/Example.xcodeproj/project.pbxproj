@@ -20,7 +20,6 @@
 		CDAC631817A0EF1A00F5452A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CDAC631717A0EF1A00F5452A /* Default.png */; };
 		CDAC631A17A0EF1A00F5452A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CDAC631917A0EF1A00F5452A /* Default@2x.png */; };
 		CDAC631C17A0EF1A00F5452A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CDAC631B17A0EF1A00F5452A /* Default-568h@2x.png */; };
-		CDAC632417A0EF1A00F5452A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC632317A0EF1A00F5452A /* SenTestingKit.framework */; };
 		CDAC632517A0EF1A00F5452A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630517A0EF1A00F5452A /* UIKit.framework */; };
 		CDAC632617A0EF1A00F5452A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC630717A0EF1A00F5452A /* Foundation.framework */; };
 		CDAC632E17A0EF1A00F5452A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDAC632C17A0EF1A00F5452A /* InfoPlist.strings */; };
@@ -46,6 +45,7 @@
 /* Begin PBXFileReference section */
 		6451F34D9FAB46EBB9653A65 /* Pods-ExampleTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleTests.xcconfig"; path = "Pods/Pods-ExampleTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD42CE50191A6D6300FE86A6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		ADC004A5191284B60064D25F /* KZPropertyMapperTypingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperTypingTests.m; sourceTree = "<group>"; };
 		CD0508D019067DC60023C2FF /* KZPropertyMapperListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperListTests.m; sourceTree = "<group>"; };
 		CDAC630217A0EF1A00F5452A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,8 +61,7 @@
 		CDAC631717A0EF1A00F5452A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		CDAC631917A0EF1A00F5452A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		CDAC631B17A0EF1A00F5452A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		CDAC632217A0EF1A00F5452A /* ExampleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDAC632317A0EF1A00F5452A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		CDAC632217A0EF1A00F5452A /* ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAC632B17A0EF1A00F5452A /* ExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ExampleTests-Info.plist"; sourceTree = "<group>"; };
 		CDAC632D17A0EF1A00F5452A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CDAC633B17A0EF4000F5452A /* KZPropertyMapperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyMapperTests.m; sourceTree = "<group>"; };
@@ -94,7 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDAC632417A0EF1A00F5452A /* SenTestingKit.framework in Frameworks */,
 				CDAC632517A0EF1A00F5452A /* UIKit.framework in Frameworks */,
 				CDAC632617A0EF1A00F5452A /* Foundation.framework in Frameworks */,
 				2421600A92E84FFAA2716F3B /* libPods-ExampleTests.a in Frameworks */,
@@ -120,7 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				CDAC630217A0EF1A00F5452A /* Example.app */,
-				CDAC632217A0EF1A00F5452A /* ExampleTests.octest */,
+				CDAC632217A0EF1A00F5452A /* ExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,8 +129,8 @@
 				CDAC630517A0EF1A00F5452A /* UIKit.framework */,
 				CDAC630717A0EF1A00F5452A /* Foundation.framework */,
 				CDAC630917A0EF1A00F5452A /* CoreGraphics.framework */,
-				CDAC632317A0EF1A00F5452A /* SenTestingKit.framework */,
 				8DE99CA4CF324D9C997F1B69 /* libPods-ExampleTests.a */,
+				AD42CE50191A6D6300FE86A6 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -238,7 +236,7 @@
 			);
 			name = ExampleTests;
 			productName = ExampleTests;
-			productReference = CDAC632217A0EF1A00F5452A /* ExampleTests.octest */;
+			productReference = CDAC632217A0EF1A00F5452A /* ExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -483,7 +481,7 @@
 				INFOPLIST_FILE = "ExampleTests/ExampleTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
@@ -501,7 +499,7 @@
 				INFOPLIST_FILE = "ExampleTests/ExampleTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};

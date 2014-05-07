@@ -1,1 +1,1 @@
-../../Kiwi/Classes/NSInvocation+KiwiAdditions.h
+../../Kiwi/Classes/Core/NSInvocation+KiwiAdditions.h

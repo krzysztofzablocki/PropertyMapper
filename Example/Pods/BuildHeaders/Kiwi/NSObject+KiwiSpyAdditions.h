@@ -1,1 +1,1 @@
-../../Kiwi/Classes/NSObject+KiwiSpyAdditions.h
+../../Kiwi/Classes/Core/NSObject+KiwiSpyAdditions.h

@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWEqualMatcher.h
+../../Kiwi/Classes/Matchers/KWEqualMatcher.h

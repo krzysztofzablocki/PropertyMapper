@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWBlockNode.h
+../../Kiwi/Classes/Nodes/KWBlockNode.h
