@@ -229,8 +229,8 @@ describe(@"Mapper", ^{
         sourceDictionary = @{@"key" : @[@"v1", @"v2"]};
         [[theBlock(^{
           testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-        }) shouldNot] raise];
-        [[theValue(testResult) should] beTrue];
+        }) should] raise];
+        [[theValue(testResult) should] beFalse];
         [[testObject.title should] beNil];
       });
       

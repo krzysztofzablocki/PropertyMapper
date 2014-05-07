@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWSpec.h
+../../Kiwi/Classes/Core/KWSpec.h

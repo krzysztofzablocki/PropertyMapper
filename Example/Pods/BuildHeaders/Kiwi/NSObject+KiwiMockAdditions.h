@@ -1,1 +1,1 @@
-../../Kiwi/Classes/NSObject+KiwiMockAdditions.h
+../../Kiwi/Classes/Mocking/NSObject+KiwiMockAdditions.h

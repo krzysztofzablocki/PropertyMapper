@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWIntercept.h
+../../Kiwi/Classes/Stubbing/KWIntercept.h

@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWFailure.h
+../../Kiwi/Classes/Core/KWFailure.h

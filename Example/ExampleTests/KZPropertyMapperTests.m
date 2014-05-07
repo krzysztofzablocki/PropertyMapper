@@ -20,7 +20,7 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           @"sub_object" : @{
             @"title" : @"uniqueID"}
         };
-        sourceDictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
+        sourceDictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
         testObject = [TestObject new];
       });
 
@@ -101,11 +101,11 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         });
 
         it(@"should work for base properties", ^{
-          [[testObject.type should] equal:sourceDictionary[@"name"]];
+          [[testObject.title should] equal:sourceDictionary[@"name"]];
         });
 
         it(@"should support boxing functionality", ^{
-          [[testObject.videoURL should] beKindOfClass:NSURL.class];
+          [[testObject.contentURL should] beKindOfClass:NSURL.class];
         });
 
         it(@"should work with selector boxing", ^{

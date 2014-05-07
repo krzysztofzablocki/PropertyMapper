@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWStub.h
+../../Kiwi/Classes/Stubbing/KWStub.h
