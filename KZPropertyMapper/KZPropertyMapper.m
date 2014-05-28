@@ -347,13 +347,14 @@ static BOOL _shouldLogIgnoredValues = YES;
 + (NSDateFormatter *)dateFormatter
 {
   static NSDateFormatter *df = nil;
-  if (df == nil) {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
     df = [[NSDateFormatter alloc] init];
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
     [df setLocale:locale];
     [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-  }
+  });
   return df;
 }
 
