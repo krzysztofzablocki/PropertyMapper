@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWStringUtilities.h
+../../Kiwi/Classes/Core/KWStringUtilities.h

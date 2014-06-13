@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWMessageSpying.h
+../../Kiwi/Classes/Core/KWMessageSpying.h

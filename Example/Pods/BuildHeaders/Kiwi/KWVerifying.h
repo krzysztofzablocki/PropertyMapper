@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWVerifying.h
+../../Kiwi/Classes/Verifiers/KWVerifying.h

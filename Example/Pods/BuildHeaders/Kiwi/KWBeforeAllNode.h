@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWBeforeAllNode.h
+../../Kiwi/Classes/Nodes/KWBeforeAllNode.h

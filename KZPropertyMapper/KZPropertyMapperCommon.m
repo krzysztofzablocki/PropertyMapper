@@ -4,7 +4,7 @@
 //
 //
 NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUserInfo, SEL selector) {
-  NSMutableDictionary *userInfo = [aUserInfo mutableCopy];
+  NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:aUserInfo];
   userInfo[NSLocalizedDescriptionKey] = message;
   NSError *error = [NSError errorWithDomain:@"com.pixle.KZPropertyMapper" code:code userInfo:userInfo];
 

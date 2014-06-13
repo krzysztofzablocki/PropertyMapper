@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWStringContainsMatcher.h
+../../Kiwi/Classes/Matchers/KWStringContainsMatcher.h

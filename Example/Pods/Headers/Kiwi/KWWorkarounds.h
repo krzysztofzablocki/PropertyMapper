@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWWorkarounds.h
+../../Kiwi/Classes/Core/KWWorkarounds.h

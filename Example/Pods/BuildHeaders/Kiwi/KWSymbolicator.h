@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWSymbolicator.h
+../../Kiwi/Classes/Core/KWSymbolicator.h

@@ -11,7 +11,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
       __block NSDictionary *mapping;
       __block NSDictionary *sourceDictionary;
       __block TestObject *testObject;
-
+      __block BOOL testResult;
+      
       beforeEach(^{
         mapping = @{@"videoURL" : @"@URL(contentURL)",
           @"name" : @"title",
@@ -19,7 +20,7 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           @"sub_object" : @{
             @"title" : @"uniqueID"}
         };
-        sourceDictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool Video", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
+        sourceDictionary = @{@"videoURL" : @"http://test.com/video.mp4", @"name" : @"Some Cool", @"videoType" : [NSNull null], @"sub_object" : @{@"title" : @616}};
         testObject = [TestObject new];
       });
 
@@ -100,11 +101,11 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         });
 
         it(@"should work for base properties", ^{
-          [[testObject.type should] equal:sourceDictionary[@"name"]];
+          [[testObject.title should] equal:sourceDictionary[@"name"]];
         });
 
         it(@"should support boxing functionality", ^{
-          [[testObject.videoURL should] beKindOfClass:NSURL.class];
+          [[testObject.contentURL should] beKindOfClass:NSURL.class];
         });
 
         it(@"should work with selector boxing", ^{
@@ -124,8 +125,260 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         });
         
       });
+      
+      context(@"when expecting simple object value", ^{
+        
+        beforeAll(^{
+          mapping = @{@"testValue" : @"title" };
+        });
+        
+        beforeEach(^{
+          testObject = [TestObject new];
+        });
+        
+        it(@"should work with good mapping", ^{
+          sourceDictionary = @{@"testValue" : @"domek"};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title shouldNot] beNil];
+          [[testObject.title should] equal:@"domek"];
+        });
+        
+        it(@"should handle absence of value", ^{
+          sourceDictionary = @{@"differentValue" : @"domek"};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle NULL value", ^{
+          sourceDictionary = @{@"testValue" : [NSNull null]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle dictionary value", ^{
+          sourceDictionary = @{@"testValue" : @{@"key" : @"value"}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle array value", ^{
+          sourceDictionary = @{@"testValue" : @[@"v1", @"v2"]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+      });
+      
+      context(@"when expecting dictionary", ^{
+        beforeAll(^{
+          mapping = @{@"key" : @{@"testValue" : @"title"}};
+        });
+        
+        beforeEach(^{
+          testObject = [TestObject new];
+        });
+        
+        it(@"should work with good mapping", ^{
+          sourceDictionary = @{@"key" : @{@"testValue" : @"domek"}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title shouldNot] beNil];
+          [[testObject.title should] equal:@"domek"];
+        });
+        
+        it(@"should handle wrong path", ^{
+          sourceDictionary = @{@"differentKey" : @{@"testValue" : @"domek"}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle wrong path", ^{
+          sourceDictionary = @{@"key" : @{@"wrongValue" : @"domek"}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle absence of value", ^{
+          sourceDictionary = @{@"differentKey" : @""};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle NULL value", ^{
+          sourceDictionary = @{@"key" : [NSNull null]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle NULL value", ^{
+          sourceDictionary = @{@"key" : @{@"testValue" : [NSNull null]}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle simple value", ^{
+          sourceDictionary = @{@"key" : @"someValue"};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle array value", ^{
+          sourceDictionary = @{@"key" : @[@"v1", @"v2"]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle nested array value", ^{
+          sourceDictionary = @{@"key" : @{@"testValue" : @[@"v"]}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle nested dictionary value", ^{
+          sourceDictionary = @{@"key" : @{@"testValue" : @{@"v" : @"op"}}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+      });
+      
+      context(@"when expecting array", ^{
+        beforeAll(^{
+          mapping = @{ @"testValue" : @{@1 : @"title"}};
+        });
+        
+        beforeEach(^{
+          testObject = [TestObject new];
+        });
+        
+        it(@"should work with good mapping", ^{
+          sourceDictionary = @{@"testValue" : @[@"v1", @"domek"]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title shouldNot] beNil];
+          [[testObject.title should] equal:@"domek"];
+        });
+        
+        it(@"should handle index out of range", ^{
+          sourceDictionary = @{@"testValue" : @[@"v1"]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle absence of value", ^{
+          sourceDictionary = @{@"differentValue" : @"someValue"};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle NULL value in array", ^{
+          sourceDictionary = @{@"testValue" : @[@"v1", [NSNull null]]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle NULL value", ^{
+          sourceDictionary = @{@"testValue" : [NSNull null]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle simple value", ^{
+          sourceDictionary = @{@"testValue" : @"value"};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle dictionary value", ^{
+          sourceDictionary = @{@"testValue" : @{@"v1" : @"v2"}};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle nested dictionary value", ^{
+          sourceDictionary = @{@"testValue" : @[@"v1", @{@"v2" : @"v3"}]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+        
+        it(@"should handle nested array value", ^{
+          sourceDictionary = @{@"testValue" : @[@"v1", @[@"v2", @"v3"]]};
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
+          }) shouldNot] raise];
+          [[theValue(testResult) should] beTrue];
+          [[testObject.title should] beNil];
+        });
+      });
     });
+    
   });
-
 
   SPEC_END

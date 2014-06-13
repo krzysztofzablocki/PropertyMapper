@@ -1,1 +1,1 @@
-../../Kiwi/Classes/KWInvocationCapturer.h
+../../Kiwi/Classes/Core/KWInvocationCapturer.h
