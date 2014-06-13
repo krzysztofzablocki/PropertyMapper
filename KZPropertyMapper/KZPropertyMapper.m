@@ -167,8 +167,17 @@
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass]) {
     [instance willChangeValueForKey:mapping];
     void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
-    objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
-    [instance didChangeValueForKey:mapping];
+    @try {
+      objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, mapping);
+    }
+    @catch (NSException *exception) {
+      BOOL isInvalidType = [exception.name isEqualToString:NSInvalidArgumentException];
+      NSString *message = isInvalidType ? [NSString stringWithFormat:@"The type of value `%@` is not as expected for key `%@`", value, mapping] : @"Unexpected error occurred.";
+      NSAssert(NO, message);
+    }
+    @finally {
+      [instance didChangeValueForKey:mapping];
+    }
   } else {
     [instance setValue:value forKeyPath:mapping];
   }
