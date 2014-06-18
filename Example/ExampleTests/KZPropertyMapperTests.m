@@ -28,6 +28,7 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         mapping = nil;
         sourceDictionary = nil;
         testObject = nil;
+        testResult = NO;
       });
 
       it(@"should convert any NSNull's to nil", ^{
@@ -126,14 +127,10 @@ SPEC_BEGIN(KZPropertyMapperSpec)
         
       });
       
-      context(@"when expecting simple object value", ^{
-        
-        beforeAll(^{
-          mapping = @{@"testValue" : @"title" };
-        });
+      context(@"when mapping to non-collection object", ^{
         
         beforeEach(^{
-          testObject = [TestObject new];
+          mapping = @{@"testValue" : @"title" };
         });
         
         it(@"should work with good mapping", ^{
@@ -168,8 +165,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"testValue" : @{@"key" : @"value"}};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
@@ -177,20 +174,17 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"testValue" : @[@"v1", @"v2"]};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
       });
       
-      context(@"when expecting dictionary", ^{
-        beforeAll(^{
-          mapping = @{@"key" : @{@"testValue" : @"title"}};
-        });
+      context(@"when mapping to dictionary", ^{
         
         beforeEach(^{
-          testObject = [TestObject new];
+          mapping = @{@"key" : @{@"testValue" : @"title"}};
         });
         
         it(@"should work with good mapping", ^{
@@ -252,8 +246,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"key" : @"someValue"};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
@@ -261,8 +255,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"key" : @[@"v1", @"v2"]};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
@@ -270,8 +264,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"key" : @{@"testValue" : @[@"v"]}};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
@@ -279,20 +273,17 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"key" : @{@"testValue" : @{@"v" : @"op"}}};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
       });
       
-      context(@"when expecting array", ^{
-        beforeAll(^{
-          mapping = @{ @"testValue" : @{@1 : @"title"}};
-        });
+      context(@"when mapping to array", ^{
         
         beforeEach(^{
-          testObject = [TestObject new];
+          mapping = @{ @"testValue" : @{@1 : @"title"}};
         });
         
         it(@"should work with good mapping", ^{
@@ -345,8 +336,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"testValue" : @"value"};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
@@ -363,8 +354,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"testValue" : @[@"v1", @{@"v2" : @"v3"}]};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
         
@@ -372,8 +363,8 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           sourceDictionary = @{@"testValue" : @[@"v1", @[@"v2", @"v3"]]};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
-          }) shouldNot] raise];
-          [[theValue(testResult) should] beTrue];
+          }) should] raise];
+          [[theValue(testResult) should] beFalse];
           [[testObject.title should] beNil];
         });
       });
