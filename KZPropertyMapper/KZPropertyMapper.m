@@ -189,8 +189,17 @@
           [[((NSManagedObject *) instance).entity propertiesByName] valueForKey:targetKeyPath]) {
     [instance willChangeValueForKey:targetKeyPath];
     void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
-    objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, targetKeyPath);
-    [instance didChangeValueForKey:targetKeyPath];
+    @try {
+      objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, targetKeyPath);
+    }
+    @catch (NSException *exception) {
+      BOOL isInvalidType = [exception.name isEqualToString:NSInvalidArgumentException];
+      NSString *message = isInvalidType ? [NSString stringWithFormat:@"The type of value `%@` is not as expected for key `%@`", value, targetKeyPath] : @"Unexpected error occurred.";
+      NSAssert(NO, message);
+    }
+    @finally {
+      [instance didChangeValueForKey:targetKeyPath];
+    }
   } else {
     [instance setValue:value forKeyPath:targetKeyPath];
   }
