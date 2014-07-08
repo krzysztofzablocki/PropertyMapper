@@ -149,14 +149,14 @@
     SEL mappingSelector = NSSelectorFromString([NSString stringWithFormat:@"boxValueAs%@OnTarget:value:params:", mappingType]);
     AssertTrueOrReturnNoBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
     });
-    id (*objc_msgSendTyped)(id, SEL, id, id, NSArray *) = (void *)objc_msgSend;
+    id (*objc_msgSendTyped)(id, SEL, id, id, NSArray *) = (id (*)(id, SEL, id, id, NSArray *))objc_msgSend;
     boxingParameters = [boxingParameters arrayByAddingObject:targetProperty];
     boxedValue = objc_msgSendTyped(self, mappingSelector, instance, value, boxingParameters);
   } else {
     SEL mappingSelector = NSSelectorFromString([NSString stringWithFormat:@"boxValueAs%@:", mappingType]);
     AssertTrueOrReturnNoBlock([self respondsToSelector:mappingSelector], ^(NSError *error) {
     });
-    id (*objc_msgSendTyped)(id, SEL, id) = (void *)objc_msgSend;
+    id (*objc_msgSendTyped)(id, SEL, id) = (id (*)(id, SEL, id))objc_msgSend;
     boxedValue = objc_msgSendTyped(self, mappingSelector, value);
   }
 
@@ -188,7 +188,7 @@
   if (coreDataBaseClass != nil && [instance isKindOfClass:coreDataBaseClass] &&
           [[((NSManagedObject *) instance).entity propertiesByName] valueForKey:targetKeyPath]) {
     [instance willChangeValueForKey:targetKeyPath];
-    void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
+    void (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void (*)(id, SEL, id, NSString*))objc_msgSend;
     objc_msgSendTyped(instance, NSSelectorFromString(@"setPrimitiveValue:forKey:"), value, targetKeyPath);
     [instance didChangeValueForKey:targetKeyPath];
   } else {
@@ -380,10 +380,10 @@ static BOOL _shouldLogIgnoredValues = YES;
   
   AssertTrueOrReturnNil([target respondsToSelector:selector]);
   if(selectorComponents.count > 2){
-    id (*objc_msgSendTyped)(id, SEL, id, NSString*) = (void *)objc_msgSend;
+    id (*objc_msgSendTyped)(id, SEL, id, NSString*) = (id (*)(id, SEL, id, NSString*))objc_msgSend;
     return objc_msgSendTyped(target, selector, value, targetPropertyName);
   }
-  id (*objc_msgSendTyped)(id, SEL, id) = (void *)objc_msgSend;
+  id (*objc_msgSendTyped)(id, SEL, id) = (id (*)(id, SEL, id))objc_msgSend;
   return objc_msgSendTyped(target, selector, value);
 }
 @end
