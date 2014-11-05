@@ -15,31 +15,6 @@ I've created **Property Mapper** as part of working on [Foldify][2], a simple se
 I don't like passing around JSON so I write parsing on top of native objects like NSDictionary/NSArray. 
 If you get data as JSON just write a simple category that transforms JSON to native objects using NSJSONSerialization.
 
-
-## What's new in 2.5.0?
-
-* Added KZList that allows you to map single source property into multiple target ones.
-* Added type checking while parsing, if mismatched type is found a property will be ignored and a warning will be generated.  
-* Fixed few minor bugs when working with unexpected server responses.
-
-````objc
-@{
-  	@"videoURL" : KZList(
-				KZBoxT(object, URL, contentURL),
-				KZPropertyT(object, uniqueID),
-				KZCallT(object, passthroughMethod:, type)
-			)
-}
-````
-
-Contributed by [Marek Cirkos][3]
-
-## What's new in 2.0?
-* New property syntax (old one still works) that allows you to get  compile errors when you misspell property names.
-* Introduced concept of validators, chain-able.
-
-Time to implement this changes was sponsored by [The App Business][1].
-
 ## Example usage
 Let's assume you have object like this:
 ````objc
@@ -168,6 +143,34 @@ You can expand boxing capabilities across whole application easily, just add cat
 }
 ````
 Now you can use @Type mapping everywhere in your code.
+
+
+# Changelog
+
+## 2.5.0
+
+* Added KZList that allows you to map single source property into multiple target ones.
+* Added type checking while parsing, if mismatched type is found a property will be ignored and a warning will be generated.  
+* Fixed few minor bugs when working with unexpected server responses.
+
+````objc
+@{
+  	@"videoURL" : KZList(
+				KZBoxT(object, URL, contentURL),
+				KZPropertyT(object, uniqueID),
+				KZCallT(object, passthroughMethod:, type)
+			)
+}
+````
+
+Contributed by [Marek Cirkos][3]
+
+## 2.0
+* New property syntax (old one still works) that allows you to get  compile errors when you misspell property names.
+* Introduced concept of validators, chain-able.
+
+Time to implement this changes was sponsored by [The App Business][1].
+
 
 # Installing
 Use CocoaPods.
