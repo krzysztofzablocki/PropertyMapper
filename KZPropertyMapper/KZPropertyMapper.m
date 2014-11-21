@@ -363,7 +363,7 @@ static BOOL _shouldLogIgnoredValues = YES;
   dispatch_once(&onceToken, ^{
     df = [[NSDateFormatter alloc] init];
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     [df setLocale:locale];
     [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
   });
