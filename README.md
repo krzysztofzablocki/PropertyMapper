@@ -171,8 +171,6 @@ Contributed by [Marek Cirkos][3]
 
 Time to implement this changes was sponsored by [The App Business][1].
 
-If you'd like to support my tools and tutorials, you can do that [via Patreon](http://www.patreon.com/merowing)
-
 # Installing
 Use CocoaPods.
 Or just add KZPropertyMapper folder to your project, make sure you enable ARC on this files.
