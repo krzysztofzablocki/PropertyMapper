@@ -353,7 +353,10 @@ static BOOL _shouldLogIgnoredValues = YES;
     return nil;
   }
   AssertTrueOrReturnNil([value isKindOfClass:NSString.class]);
-  return [[self dateFormatter] dateFromString:value];
+
+  NSDate *date = [[self dateFormatter] dateFromString:value] ?: [[self dateFormatterWithMilliseconds] dateFromString:value];
+
+  return date;
 }
 
 + (NSDateFormatter *)dateFormatter
@@ -364,6 +367,20 @@ static BOOL _shouldLogIgnoredValues = YES;
     df = [[NSDateFormatter alloc] init];
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    [df setLocale:locale];
+    [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+  });
+  return df;
+}
+
++ (NSDateFormatter *)dateFormatterWithMilliseconds
+{
+  static NSDateFormatter *df = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    df = [[NSDateFormatter alloc] init];
+    NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"];
     [df setLocale:locale];
     [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
   });
@@ -387,4 +404,3 @@ static BOOL _shouldLogIgnoredValues = YES;
   return objc_msgSendTyped(target, selector, value);
 }
 @end
-
