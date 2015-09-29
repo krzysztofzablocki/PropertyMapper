@@ -1,0 +1,6 @@
+framework module KZPropertyMapper {
+  umbrella header "KZPropertyMapperFramework.h"
+
+  export *
+  module * { export * }
+}
