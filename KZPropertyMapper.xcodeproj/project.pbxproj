@@ -7,21 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F3114F7C1BBAFE8600C5F48D /* KZPropertyDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4901BBAD5A300EBB00A /* KZPropertyDescriptor.m */; settings = {ASSET_TAGS = (); }; };
+		F3114F7D1BBAFE8600C5F48D /* KZPropertyDescriptor+Validators.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4921BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.m */; settings = {ASSET_TAGS = (); }; };
+		F3114F7E1BBAFE8600C5F48D /* KZPropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4971BBAD5A900EBB00A /* KZPropertyMapper.m */; settings = {ASSET_TAGS = (); }; };
+		F3114F7F1BBAFE8600C5F48D /* KZPropertyMapperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4991BBAD5A900EBB00A /* KZPropertyMapperCommon.m */; settings = {ASSET_TAGS = (); }; };
+		F3114F821BBAFE8600C5F48D /* KZPropertyDescriptor+Validators.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4911BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F3114F831BBAFE8600C5F48D /* KZPropertyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4A01BBAD64600EBB00A /* KZPropertyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F3114F841BBAFE8600C5F48D /* KZPropertyMapperFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4871BBAD57500EBB00A /* KZPropertyMapperFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F3114F851BBAFE8600C5F48D /* KZPropertyMapperCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4981BBAD5A900EBB00A /* KZPropertyMapperCommon.h */; };
+		F3114F861BBAFE8600C5F48D /* KZPropertyDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B48F1BBAD5A300EBB00A /* KZPropertyDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F3C0B4881BBAD57500EBB00A /* KZPropertyMapperFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4871BBAD57500EBB00A /* KZPropertyMapperFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F3C0B4931BBAD5A300EBB00A /* KZPropertyDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B48F1BBAD5A300EBB00A /* KZPropertyDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F3C0B4941BBAD5A300EBB00A /* KZPropertyDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4901BBAD5A300EBB00A /* KZPropertyDescriptor.m */; settings = {ASSET_TAGS = (); }; };
 		F3C0B4951BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4911BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F3C0B4961BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4921BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.m */; settings = {ASSET_TAGS = (); }; };
 		F3C0B49A1BBAD5A900EBB00A /* KZPropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4971BBAD5A900EBB00A /* KZPropertyMapper.m */; settings = {ASSET_TAGS = (); }; };
-		F3C0B49B1BBAD5A900EBB00A /* KZPropertyMapperCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4981BBAD5A900EBB00A /* KZPropertyMapperCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F3C0B49B1BBAD5A900EBB00A /* KZPropertyMapperCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4981BBAD5A900EBB00A /* KZPropertyMapperCommon.h */; };
 		F3C0B49C1BBAD5A900EBB00A /* KZPropertyMapperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C0B4991BBAD5A900EBB00A /* KZPropertyMapperCommon.m */; settings = {ASSET_TAGS = (); }; };
 		F3C0B4A11BBAD64600EBB00A /* KZPropertyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C0B4A01BBAD64600EBB00A /* KZPropertyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F3114F8B1BBAFE8600C5F48D /* KZPropertyMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KZPropertyMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C0B4841BBAD57500EBB00A /* KZPropertyMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KZPropertyMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C0B4871BBAD57500EBB00A /* KZPropertyMapperFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KZPropertyMapperFramework.h; sourceTree = "<group>"; };
-		F3C0B4891BBAD57500EBB00A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3C0B4891BBAD57500EBB00A /* KZPropertyMapper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = KZPropertyMapper.plist; sourceTree = "<group>"; };
 		F3C0B48F1BBAD5A300EBB00A /* KZPropertyDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZPropertyDescriptor.h; sourceTree = "<group>"; };
 		F3C0B4901BBAD5A300EBB00A /* KZPropertyDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZPropertyDescriptor.m; sourceTree = "<group>"; };
 		F3C0B4911BBAD5A300EBB00A /* KZPropertyDescriptor+Validators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KZPropertyDescriptor+Validators.h"; sourceTree = "<group>"; };
@@ -33,6 +43,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F3114F801BBAFE8600C5F48D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F3C0B4801BBAD57500EBB00A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -55,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				F3C0B4841BBAD57500EBB00A /* KZPropertyMapper.framework */,
+				F3114F8B1BBAFE8600C5F48D /* KZPropertyMapper.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,7 +113,7 @@
 		F3C0B49F1BBAD5BB00EBB00A /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				F3C0B4891BBAD57500EBB00A /* Info.plist */,
+				F3C0B4891BBAD57500EBB00A /* KZPropertyMapper.plist */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -103,6 +121,18 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		F3114F811BBAFE8600C5F48D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3114F821BBAFE8600C5F48D /* KZPropertyDescriptor+Validators.h in Headers */,
+				F3114F831BBAFE8600C5F48D /* KZPropertyMapper.h in Headers */,
+				F3114F841BBAFE8600C5F48D /* KZPropertyMapperFramework.h in Headers */,
+				F3114F851BBAFE8600C5F48D /* KZPropertyMapperCommon.h in Headers */,
+				F3114F861BBAFE8600C5F48D /* KZPropertyDescriptor.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F3C0B4811BBAD57500EBB00A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -118,9 +148,27 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F3C0B4831BBAD57500EBB00A /* KZPropertyMapper */ = {
+		F3114F7A1BBAFE8600C5F48D /* KZPropertyMapperIOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F3C0B48C1BBAD57500EBB00A /* Build configuration list for PBXNativeTarget "KZPropertyMapper" */;
+			buildConfigurationList = F3114F881BBAFE8600C5F48D /* Build configuration list for PBXNativeTarget "KZPropertyMapperIOS" */;
+			buildPhases = (
+				F3114F7B1BBAFE8600C5F48D /* Sources */,
+				F3114F801BBAFE8600C5F48D /* Frameworks */,
+				F3114F811BBAFE8600C5F48D /* Headers */,
+				F3114F871BBAFE8600C5F48D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KZPropertyMapperIOS;
+			productName = KZPropertyMapper;
+			productReference = F3114F8B1BBAFE8600C5F48D /* KZPropertyMapper.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F3C0B4831BBAD57500EBB00A /* KZPropertyMapperOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3C0B48C1BBAD57500EBB00A /* Build configuration list for PBXNativeTarget "KZPropertyMapperOSX" */;
 			buildPhases = (
 				F3C0B47F1BBAD57500EBB00A /* Sources */,
 				F3C0B4801BBAD57500EBB00A /* Frameworks */,
@@ -131,7 +179,7 @@
 			);
 			dependencies = (
 			);
-			name = KZPropertyMapper;
+			name = KZPropertyMapperOSX;
 			productName = KZPropertyMapper;
 			productReference = F3C0B4841BBAD57500EBB00A /* KZPropertyMapper.framework */;
 			productType = "com.apple.product-type.framework";
@@ -162,12 +210,20 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F3C0B4831BBAD57500EBB00A /* KZPropertyMapper */,
+				F3C0B4831BBAD57500EBB00A /* KZPropertyMapperOSX */,
+				F3114F7A1BBAFE8600C5F48D /* KZPropertyMapperIOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F3114F871BBAFE8600C5F48D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F3C0B4821BBAD57500EBB00A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,6 +234,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F3114F7B1BBAFE8600C5F48D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3114F7C1BBAFE8600C5F48D /* KZPropertyDescriptor.m in Sources */,
+				F3114F7D1BBAFE8600C5F48D /* KZPropertyDescriptor+Validators.m in Sources */,
+				F3114F7E1BBAFE8600C5F48D /* KZPropertyMapper.m in Sources */,
+				F3114F7F1BBAFE8600C5F48D /* KZPropertyMapperCommon.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F3C0B47F1BBAD57500EBB00A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -192,6 +259,42 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		F3114F891BBAFE8600C5F48D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = KZPropertyMapper/KZPropertyMapper.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(SRCROOT)/KZPropertyMapper/module.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kzpropertymapper.KZPropertyMapper;
+				PRODUCT_NAME = KZPropertyMapper;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F3114F8A1BBAFE8600C5F48D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = KZPropertyMapper/KZPropertyMapper.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(SRCROOT)/KZPropertyMapper/module.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kzpropertymapper.KZPropertyMapper;
+				PRODUCT_NAME = KZPropertyMapper;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		F3C0B48A1BBAD57500EBB00A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -287,16 +390,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = KZPropertyMapper/Info.plist;
+				INFOPLIST_FILE = KZPropertyMapper/KZPropertyMapper.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "$(SRCROOT)/KZPropertyMapper/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kzpropertymapper.KZPropertyMapper;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = KZPropertyMapper;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
-				VALID_ARCHS = "i386 x86_64 armv7s armv7 arm64";
 			};
 			name = Debug;
 		};
@@ -307,22 +408,29 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = KZPropertyMapper/Info.plist;
+				INFOPLIST_FILE = KZPropertyMapper/KZPropertyMapper.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "$(SRCROOT)/KZPropertyMapper/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kzpropertymapper.KZPropertyMapper;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = KZPropertyMapper;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
-				VALID_ARCHS = "i386 x86_64 armv7s armv7 arm64";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F3114F881BBAFE8600C5F48D /* Build configuration list for PBXNativeTarget "KZPropertyMapperIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3114F891BBAFE8600C5F48D /* Debug */,
+				F3114F8A1BBAFE8600C5F48D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F3C0B47E1BBAD57500EBB00A /* Build configuration list for PBXProject "KZPropertyMapper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -332,7 +440,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F3C0B48C1BBAD57500EBB00A /* Build configuration list for PBXNativeTarget "KZPropertyMapper" */ = {
+		F3C0B48C1BBAD57500EBB00A /* Build configuration list for PBXNativeTarget "KZPropertyMapperOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F3C0B48D1BBAD57500EBB00A /* Debug */,

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F3C0B4831BBAD57500EBB00A"
+               BlueprintIdentifier = "F3114F7A1BBAFE8600C5F48D"
                BuildableName = "KZPropertyMapper.framework"
-               BlueprintName = "KZPropertyMapper"
+               BlueprintName = "KZPropertyMapperIOS"
                ReferencedContainer = "container:KZPropertyMapper.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F3C0B4831BBAD57500EBB00A"
+            BlueprintIdentifier = "F3114F7A1BBAFE8600C5F48D"
             BuildableName = "KZPropertyMapper.framework"
-            BlueprintName = "KZPropertyMapper"
+            BlueprintName = "KZPropertyMapperIOS"
             ReferencedContainer = "container:KZPropertyMapper.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F3C0B4831BBAD57500EBB00A"
+            BlueprintIdentifier = "F3114F7A1BBAFE8600C5F48D"
             BuildableName = "KZPropertyMapper.framework"
-            BlueprintName = "KZPropertyMapper"
+            BlueprintName = "KZPropertyMapperIOS"
             ReferencedContainer = "container:KZPropertyMapper.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

@@ -15,3 +15,4 @@ FOUNDATION_EXPORT double KZPropertyMapperVersionNumber;
 FOUNDATION_EXPORT const unsigned char KZPropertyMapperVersionString[];
 
 #import <KZPropertyMapper/KZPropertyMapper.h>
+#import <KZPropertyMapper/KZPropertyDescriptor+Validators.h>
