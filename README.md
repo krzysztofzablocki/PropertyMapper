@@ -172,8 +172,15 @@ Contributed by [Marek Cirkos][3]
 Time to implement this changes was sponsored by [The App Business][1].
 
 # Installing
-Use CocoaPods.
-Or just add KZPropertyMapper folder to your project, make sure you enable ARC on this files.
+- Using CocoaPods: Add the following line to your `Podfile`:
+
+    ```pod "KZPropertyMapper"```
+
+- Using Carthage: Add the following to your `Cartfile`:
+
+    ```github "krzysztofzablocki/KZPropertyMapper" "master"```
+ 
+- Or just add the `KZPropertyMapper/` folder to your project, making sure you enable ARC on these files.
 
 # Final note
 Unit tests should serve as documentation. Default boxing types include @URL and @Date. 
