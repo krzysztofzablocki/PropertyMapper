@@ -293,7 +293,10 @@
 				MODULEMAP_FILE = "$(SRCROOT)/KZPropertyMapper/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kzpropertymapper.KZPropertyMapper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
+				VALID_ARCHS = "i386 x86_64 armv7s armv7 arm64";
 			};
 			name = Debug;
 		};
@@ -310,7 +313,10 @@
 				MODULEMAP_FILE = "$(SRCROOT)/KZPropertyMapper/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kzpropertymapper.KZPropertyMapper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
+				VALID_ARCHS = "i386 x86_64 armv7s armv7 arm64";
 			};
 			name = Release;
 		};
