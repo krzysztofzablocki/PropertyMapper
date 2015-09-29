@@ -3,6 +3,9 @@
 //
 //
 //
+
+#import <Foundation/Foundation.h>
+
 NSError *pixle_NSErrorMake(NSString *message, NSUInteger code, NSDictionary *aUserInfo, SEL selector) {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:aUserInfo];
   userInfo[NSLocalizedDescriptionKey] = message;
