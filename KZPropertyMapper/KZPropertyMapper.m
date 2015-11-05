@@ -225,6 +225,20 @@
   }
   
   NSString *propertyClassName = [typeEncoding substringWithRange:NSMakeRange(2, typeEncoding.length - 3)];
+
+  if ([propertyClassName hasPrefix:@"<"] && [propertyClassName hasSuffix:@">"]) {
+      NSScanner *protocolScanner = [NSScanner scannerWithString:propertyClassName];
+      protocolScanner.charactersToBeSkipped = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+      NSString *protocolString;
+      while ([protocolScanner scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&protocolString]) {
+          Protocol *protocol = NSProtocolFromString(protocolString);
+          if (![object conformsToProtocol:protocol]) {
+              return NO;
+          }
+      }
+      return YES; // Looks like it is "id<SomeProtocol>", and all protocols requirements are met
+  }
+
   Class propertyClass = NSClassFromString(propertyClassName);
   BOOL isSameTypeObject = ([object isKindOfClass:propertyClass]);
   
