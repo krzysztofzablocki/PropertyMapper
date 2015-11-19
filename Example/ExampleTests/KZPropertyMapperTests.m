@@ -155,7 +155,7 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           [[testObject.dependency_as_concrete_type.value should] equal:@YES];
         });
 
-        it(@"should fail mapping concrete object protocol dependency", ^{
+        it(@"should fail mapping generic object protocol dependency", ^{
           sourceDictionary = @{@"dependency" : TestProtocolCreate(@YES)};
           [[theBlock(^{
             testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary
