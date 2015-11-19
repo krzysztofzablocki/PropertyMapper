@@ -9,6 +9,21 @@
 #import "KZPropertyMapper.h"
 #import "KZPropertyDescriptor+Validators.h"
 
+@interface _TestProtocol : NSObject <TestProtocol>
+@property (nonatomic, readwrite) id value;
+@end
+@implementation _TestProtocol
+- (instancetype)initWithValue:(id)value {
+    if (!(self = [self init])) { return nil; }
+    self.value = value;
+    return self;
+}
+@end
+
+id<TestProtocol> TestProtocolCreate(id value) {
+    return [_TestProtocol.alloc initWithValue:value];
+}
+
 @implementation TestObject
 
 - (BOOL)updateFromDictionary:(NSDictionary *)dictionary
@@ -39,3 +54,16 @@
 }
 
 @end
+
+@interface ConcreteTestProtocol ()
+@property (nonatomic, readwrite) id value;
+@end
+@implementation ConcreteTestProtocol
+- (instancetype)initWithValue:(id)value {
+    if (!(self = [self init])) { return nil; }
+    self.value = value;
+    return self;
+}
+
+@end
+
