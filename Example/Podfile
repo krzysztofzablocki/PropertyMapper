@@ -1,4 +1,4 @@
 platform :ios, '7.0'
 target 'ExampleTests', :exclusive => true do
-  pod 'Kiwi/XCTest'
+  pod 'Kiwi'
 end

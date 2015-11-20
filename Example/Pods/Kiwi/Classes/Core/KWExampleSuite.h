@@ -11,17 +11,21 @@
 
 @class KWContextNode;
 @class KWExample;
-@class SenTestCase;
 
-@interface KWExampleSuite : NSObject <KWExampleNodeVisitor>
+@interface KWExampleSuite : NSObject <KWExampleNodeVisitor, NSFastEnumeration>
 
 - (id)initWithRootNode:(KWContextNode *)contextNode;
 - (void)addExample:(KWExample *)example;
 - (void)markLastExampleAsLastInContext:(KWContextNode *)context;
-- (NSArray *)invocationsForTestCase;
+
+@property (nonatomic, readonly) NSMutableArray *examples;
+
+#pragma mark - Example selector names
+
+- (NSString *)nextUniqueSelectorName:(NSString *)name;
+
 @end
 
 @interface NSInvocation (KWExampleGroup)
-- (void)kw_setExample:(KWExample *)exampleGroup;
-- (KWExample *)kw_example;
+@property (nonatomic, setter = kw_setExample:) KWExample *kw_example;
 @end
