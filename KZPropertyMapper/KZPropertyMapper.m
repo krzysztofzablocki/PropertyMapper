@@ -174,8 +174,7 @@
     return NO;
   }
 
-  [self mapValue:value toInstance:instance usingStringMapping:descriptor.stringMapping sourceKey:sourceKey];
-  return YES;
+  return [self mapValue:value toInstance:instance usingStringMapping:descriptor.stringMapping sourceKey:sourceKey];
 }
 
 + (BOOL)setValue:(id)value onInstance:(id)instance usingKeyPath:(NSString *)targetKeyPath sourceKey:(NSString *)sourceKey
