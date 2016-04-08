@@ -213,6 +213,19 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           [[testObject.title should] beNil];
         });
         
+        it(@"should handle dictionary value when using KZProperty", ^{
+          sourceDictionary = @{@"testValue" : @{@"key" : @"value"}};
+          #ifndef NS_BLOCK_ASSERTIONS
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:@{@"testValue": KZPropertyT(testObject, title)}];
+          }) should] raise];
+          #else
+          testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:@{@"testValue": KZPropertyT(testObject, title)}];
+          [[theValue(testResult) should] beFalse];
+          [[testObject.title should] beNil];
+          #endif
+        });
+        
         it(@"should handle array value", ^{
           sourceDictionary = @{@"testValue" : @[@"v1", @"v2"]};
           [[theBlock(^{
