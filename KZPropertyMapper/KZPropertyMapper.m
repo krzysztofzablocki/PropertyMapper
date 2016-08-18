@@ -12,7 +12,6 @@
 
 @implementation KZPropertyMapper {
 }
-
 + (BOOL)mapValuesFrom:(id)arrayOrDictionary toInstance:(id)instance usingMapping:(NSDictionary *)parameterMapping
 {
   return [self mapValuesFrom:arrayOrDictionary toInstance:instance usingMapping:parameterMapping errors:nil];

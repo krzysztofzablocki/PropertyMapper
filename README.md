@@ -1,4 +1,10 @@
-# Stop repeating  your data parsing code in iOS apps. 
+[![CI Status](http://img.shields.io/travis/krzysztofzablocki/KZPropertyMapper.svg?style=flat)](https://travis-ci.org/krzysztofzablocki/KZPropertyMapper)
+[![codecov](https://codecov.io/gh/krzysztofzablocki/KZPRopertyMapper/branch/master/graph/badge.svg)](https://codecov.io/gh/krzysztofzablocki/KZPRopertyMapper)
+[![Version](https://img.shields.io/cocoapods/v/KZPropertyMapper.svg?style=flat)](http://cocoapods.org/pods/KZPropertyMapper)
+[![License](https://img.shields.io/cocoapods/l/KZPropertyMapper.svg?style=flat)](http://cocoapods.org/pods/KZPropertyMapper)
+[![Platform](https://img.shields.io/cocoapods/p/KZPropertyMapper.svg?style=flat)](http://cocoapods.org/pods/KZPropertyMapper)
+
+# Stop repeating  your data parsing code in iOS apps.
 Data parsing is one of most common tasks we need to do in our apps, yet still majority of people do this parsing by hand, always repeating the same code for each class they need to map.
 
 Usual parsing requires this steps:
@@ -12,7 +18,7 @@ There are libraries helping with that like Mantle, RESTKit and many more… But 
 
 I've created **Property Mapper** as part of working on [Foldify][2], a simple self contained solution that allows you to specify mapping between data you receive and data representation you have in your application... with some additional features, like **type boxing**, **validation**.
 
-I don't like passing around JSON so I write parsing on top of native objects like NSDictionary/NSArray. 
+I don't like passing around JSON so I write parsing on top of native objects like NSDictionary/NSArray.
 If you get data as JSON just write a simple category that transforms JSON to native objects using NSJSONSerialization.
 
 ## Example usage
@@ -31,9 +37,9 @@ Let's assume you have object like this:
 and you receive data from server in this format:
 ````objc
 @{
-  @"videoURL" : @"http://test.com/video.mp4", 
-	@"name" : @"Some Cool Video", 
-	@"videoType" : [NSNull null], 
+  @"videoURL" : @"http://test.com/video.mp4",
+	@"name" : @"Some Cool Video",
+	@"videoType" : [NSNull null],
 	@"sub_object" : @{
 			@"title" : @616,
 			@"arbitraryData" : @"data"
@@ -49,7 +55,7 @@ this is the code you would write in your parsing code:
      @"sub_object" : @{
          @"title" : KZProperty(uniqueID)
          }
-    
+
   }];
 ````
 Quite obvious what it does but in case you are confused, it will translate videoURL string to contentURL NSURL object, it will also grab title from sub_object and assign it to uniqueID. It also handles NSNull.
@@ -70,7 +76,7 @@ Let's now change our mind and decide that we want our type property to be typede
 }
 ````
 
-If you need property name being passed while using selectors, just pass two-argument selector in KZCall. Second argument will be property name passed as NSString. 
+If you need property name being passed while using selectors, just pass two-argument selector in KZCall. Second argument will be property name passed as NSString.
 ````objc
 @"video" : KZCall(objectFromDictionary:forPropertyName:, type),
 
@@ -84,7 +90,7 @@ If you need property name being passed while using selectors, just pass two-argu
 }
 ````
 
- 
+
 Done. KVC should also take care of escaping NSNumber into int if your property uses primitive type. Same approach will work for sub-object instances or anything that you can assign to property.
 
 ## Validations
@@ -130,7 +136,7 @@ sourceData = @{@"sub_object_array" : @[@"test", @123]}
 
 @{@"sub_object_array" : @{@1 : KZProperty(uniqueID)}
 
-```` 
+````
 This will grab first item from sub_object_array and assign it to uniqueID. It also works recursively.
 
 
@@ -179,11 +185,11 @@ Time to implement this changes was sponsored by [The App Business][1].
 - Using Carthage: Add the following to your `Cartfile`:
 
     ```github "krzysztofzablocki/KZPropertyMapper" "master"```
- 
+
 - Or just add the `KZPropertyMapper/` folder to your project, making sure you enable ARC on these files.
 
 # Final note
-Unit tests should serve as documentation. Default boxing types include @URL and @Date. 
+Unit tests should serve as documentation. Default boxing types include @URL and @Date.
 
 [Follow me on twitter][7]
 
