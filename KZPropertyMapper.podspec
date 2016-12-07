@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "KZPropertyMapper"
-  s.version      = "2.6"
+  s.version      = "2.7"
   s.summary      = "Property mapping for iOS apps."
   s.homepage     = "http://github.com/krzysztofzablocki/KZPropertyMapper"
   s.license      = 'MIT'
@@ -13,4 +13,3 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.frameworks = ['Foundation', 'CoreData'];
 end
-
