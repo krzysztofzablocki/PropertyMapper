@@ -74,7 +74,7 @@
     } else {
       AssertTrueOrReturnNo(value == nil);
       if (_shouldLogIgnoredValues) {
-        NSLog(@"KZPropertyMapper: Ignoring property %@ as it's not in mapping dictionary", propertyName);
+        NSLog(@"KZPropertyMapper: Ignoring property %@ in type %@ as it's not in mapping dictionary", propertyName, NSStringFromClass([instance class]));
       }
       return YES;
     }
@@ -82,7 +82,7 @@
 
   if (!mapping) {
     if (_shouldLogIgnoredValues) {
-      NSLog(@"KZPropertyMapper: Ignoring value at index %@ as it's not mapped", propertyName);
+      NSLog(@"KZPropertyMapper: Ignoring value at index %@ in type %@ as it's not mapped", propertyName, NSStringFromClass([instance class]));
     }
     return YES;
   }
