@@ -82,7 +82,7 @@
     self.validationBlocks = [NSMutableArray new];
   }
 
-  [self.validationBlocks addObject:validationBlock];
+  [self.validationBlocks addObject:[validationBlock copy]];
 }
 
 - (void)addValidatorWithName:(NSString *)name validation:(BOOL (^)(id value))validator
