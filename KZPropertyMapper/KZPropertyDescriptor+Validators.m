@@ -13,7 +13,7 @@
 @implementation KZPropertyDescriptor (Validators)
 
 #pragma mark - Strings
-- (KZPropertyDescriptor * (^)())isRequired
+- (KZPropertyDescriptor * (^)(void))isRequired
 {
   return ^() {
     [self addValidatorWithName:@"isRequired" validation:^(id value) {
