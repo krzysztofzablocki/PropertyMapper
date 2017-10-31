@@ -11,7 +11,7 @@
 @interface KZPropertyDescriptor (Validators)
 
 #pragma mark - Strings
-@property(nonatomic, copy, readonly) KZPropertyDescriptor *(^isRequired)();
+@property(nonatomic, copy, readonly) KZPropertyDescriptor *(^isRequired)(void);
 @property(nonatomic, copy, readonly) KZPropertyDescriptor *(^lengthRange)(NSInteger min, NSInteger max);
 @property(nonatomic, copy, readonly) KZPropertyDescriptor *(^matchesRegEx)(NSRegularExpression *regularExpression);
 @property(nonatomic, copy, readonly) KZPropertyDescriptor *(^length)(NSUInteger length);
