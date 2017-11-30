@@ -1,4 +1,9 @@
-platform :ios, '7.0'
-target 'ExampleTests', :exclusive => true do
-  pod 'Kiwi'
+platform :ios, '8.0'
+inhibit_all_warnings!
+
+target 'Example' do
+	target 'ExampleTests' do
+		inherit! :search_paths
+		pod 'Kiwi'
+	end
 end
