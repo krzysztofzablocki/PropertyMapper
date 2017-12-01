@@ -93,6 +93,20 @@ SPEC_BEGIN(KZPropertyMapperSpec)
           [KZPropertyMapper mapValuesFrom:sourceDictionary toInstance:testObject usingMapping:mapping];
           [[testObject.contentURL should] equal:[NSURL URLWithString:@"http://test.com/video.mp4"]];
         });
+
+        it(@"should handle nil from any boxing", ^{
+          sourceDictionary = @{@"videoURL" : [NSNull null]};
+          testObject.contentURL = [NSURL URLWithString:@"http://test.com/video.mp4"];
+
+          [[theBlock(^{
+            testResult = [KZPropertyMapper mapValuesFrom:sourceDictionary
+                                              toInstance:testObject
+                                            usingMapping:mapping];
+          }) shouldNot] raise];
+
+          [[theValue(testResult) should] beTrue];
+          [[testObject.contentURL should] beNil];
+        });
       });
 
 

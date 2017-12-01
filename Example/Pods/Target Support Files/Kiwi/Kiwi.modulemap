@@ -1,0 +1,6 @@
+framework module Kiwi {
+  umbrella header "Kiwi-umbrella.h"
+
+  export *
+  module * { export * }
+}

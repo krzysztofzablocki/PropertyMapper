@@ -159,10 +159,6 @@
     boxedValue = objc_msgSendTyped(self, mappingSelector, value);
   }
 
-  if (!boxedValue) {
-    return NO;
-  }
-  
   return [self setValue:boxedValue onInstance:instance usingKeyPath:targetProperty sourceKey:sourceKey];
 }
 
