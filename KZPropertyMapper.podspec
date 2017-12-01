@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "KZPropertyMapper"
-  s.version      = "2.8"
+  s.version      = "2.9"
   s.summary      = "Property mapping for iOS apps."
   s.homepage     = "http://github.com/krzysztofzablocki/KZPropertyMapper"
   s.license      = 'MIT'
